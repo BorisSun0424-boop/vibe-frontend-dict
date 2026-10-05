@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>给 Vibe Coding 小白的前端效果词典</title>
+<style>
+/* ============ 基础 ============ */
+*{box-sizing:border-box}
+:root{
+  --bg:#f4f5f8; --card:#ffffff; --line:#e7e9ef; --line-2:#eef0f5;
+  --tx:#1b1f27; --tx-2:#4c5566; --tx-3:#8a93a3;
+  --ac:#3567d6; --ac-2:#e9f0fd; --ac-3:#dbe6fb;
+  --shadow:0 1px 2px rgba(20,30,60,.05),0 6px 20px rgba(20,30,60,.05);
+  --shadow-2:0 2px 6px rgba(20,30,60,.07),0 14px 34px rgba(20,30,60,.09);
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+::selection{background:var(--ac-3)}
+.progress{position:fixed;left:0;top:0;height:2px;width:0;background:linear-gradient(90deg,#3567d6,#6ea0f5);z-index:99;transition:width .1s linear}
+
+/* 顶栏 */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.84);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:1240px;margin:0 auto;padding:0 22px;height:58px;display:flex;align-items:center;gap:16px}
+.brand{display:flex;align-items:center;gap:9px;font-weight:650;font-size:14.5px;white-space:nowrap}
+.brand .dot{width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,#3567d6,#7ea6f7);display:grid;place-items:center;color:#fff;font-size:11px;font-weight:700}
+.search{flex:1;max-width:430px;position:relative}
+.search input{width:100%;height:36px;border:1px solid var(--line);border-radius:9px;background:#f7f8fb;padding:0 34px 0 32px;font-size:13.5px;color:var(--tx);outline:none;font-family:inherit;transition:border-color .18s,background .18s,box-shadow .18s}
+.search input::placeholder{color:#a6aebc}
+.search input:focus{border-color:var(--ac);background:#fff;box-shadow:0 0 0 3px var(--ac-2)}
+.search .ic{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#a6aebc;font-size:13px;pointer-events:none}
+.search .clr{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:#e7e9ef;color:#69717f;width:19px;height:19px;border-radius:50%;cursor:pointer;font-size:11px;line-height:1;display:none}
+.search.has .clr{display:block}
+.tb-meta{font-size:12.5px;color:var(--tx-3);white-space:nowrap}
+.tb-meta b{color:var(--ac);font-variant-numeric:tabular-nums}
+
+/* 布局 */
+.layout{max-width:1240px;margin:0 auto;padding:0 22px 90px;display:grid;grid-template-columns:218px minmax(0,1fr);gap:38px;align-items:start}
+.side{position:sticky;top:76px;max-height:calc(100vh - 96px);overflow:auto;padding:26px 0 20px;scrollbar-width:thin}
+.side::-webkit-scrollbar{width:5px}
+.side::-webkit-scrollbar-thumb{background:#dcdfe7;border-radius:3px}
+.side h4{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#9aa3b2;margin:0 0 9px;font-weight:600}
+.side nav a{display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:8px;font-size:13.5px;color:var(--tx-2);border-left:2px solid transparent;transition:background .15s,color .15s}
+.side nav a:hover{background:#fff;color:var(--tx)}
+.side nav a.on{background:#fff;color:var(--ac);font-weight:600;box-shadow:var(--shadow)}
+.side nav a .rm{font-size:11.5px;color:#b3bac6;width:13px;font-weight:600}
+.side nav a.on .rm{color:var(--ac)}
+.side nav a .ct{margin-left:auto;font-size:11px;color:#b3bac6;font-variant-numeric:tabular-nums}
+.side .quick{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 22px}
+.side .quick button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 10px;font-size:12px;color:var(--tx-2);cursor:pointer;font-family:inherit;transition:.16s}
+.side .quick button:hover{border-color:var(--ac);color:var(--ac);background:var(--ac-2)}
+
+/* Hero */
+.main{padding-top:30px;min-width:0}
+.hero{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:38px 40px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-90px;top:-110px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#dfe9fd,#f4f7fe 65%,rgba(255,255,255,0));pointer-events:none}
+.hero .kick{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--ac);background:var(--ac-2);border-radius:999px;padding:4px 11px;font-weight:600;position:relative}
+.hero h1{font-size:33px;line-height:1.28;margin:15px 0 0;letter-spacing:-.015em;font-weight:700;position:relative}
+.hero .lead{color:var(--tx-2);font-size:15px;margin:13px 0 0;max-width:660px;position:relative}
+.hero .lead em{font-style:normal;color:var(--tx);background:linear-gradient(transparent 62%,#ffe9a8 62%);padding:0 1px}
+.hero .byline{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:12.5px;color:var(--tx-3);margin:16px 0 0;position:relative;align-items:center}
+.hero .byline .sep{width:1px;height:11px;background:var(--line)}
+.hero .stats{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0;position:relative}
+.hero .stat{background:#f8f9fc;border:1px solid var(--line-2);border-radius:11px;padding:9px 15px}
+.hero .stat b{display:block;font-size:19px;letter-spacing:-.02em;color:var(--tx);font-variant-numeric:tabular-nums;line-height:1.25}
+.hero .stat span{font-size:11.5px;color:var(--tx-3)}
+.hero .note{margin:20px 0 0;padding:12px 15px;background:#fbfbfd;border:1px dashed #e2e5ec;border-radius:11px;font-size:12.8px;color:var(--tx-3);position:relative}
+.hero .jump{display:flex;flex-wrap:wrap;gap:7px;margin:18px 0 0;position:relative}
+.hero .jump button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;font-size:12.5px;color:var(--tx-2);cursor:pointer;font-family:inherit;transition:.16s}
+.hero .jump button:hover{border-color:var(--ac);color:var(--ac);background:var(--ac-2)}
+.hero .jump button b{font-family:var(--mono);font-size:10.5px;color:#a8b0be;margin-left:3px}
+.hero .jump button:hover b{color:var(--ac)}
+
+/* 分类区块 */
+.sec{margin-top:52px;scroll-margin-top:76px}
+.sec-head{display:flex;gap:14px;align-items:flex-start;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:20px}
+.sec-head .rn{width:34px;height:34px;flex:0 0 34px;border-radius:10px;background:var(--ac-2);color:var(--ac);display:grid;place-items:center;font-weight:700;font-size:15px;font-family:var(--mono)}
+.sec-head h2{margin:0;font-size:19px;letter-spacing:-.01em;font-weight:650}
+.sec-head p{margin:3px 0 0;font-size:13px;color:var(--tx-3);line-height:1.55}
+
+/* 卡片 */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(322px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:17px 18px 16px;display:flex;flex-direction:column;box-shadow:0 1px 2px rgba(20,30,60,.03);transition:box-shadow .22s ease,transform .22s ease,border-color .22s ease,opacity .5s ease;scroll-margin-top:84px;opacity:0;transform:translateY(16px)}
+.card.in{opacity:1;transform:none}
+.card:hover{box-shadow:var(--shadow-2);transform:translateY(-2px);border-color:#dde2ec}
+.card.flash{border-color:var(--ac);box-shadow:0 0 0 4px var(--ac-2),var(--shadow-2)}
+.card.hide{display:none}
+/* 原文配图 */
+.hero .cover{width:100%;display:block;border-radius:14px;border:1px solid var(--line);margin:0 0 24px;box-shadow:var(--shadow)}
+.hero .qmark{width:72px;height:72px;object-fit:cover;border-radius:12px;display:block;margin:2px 0 20px}
+.orig{margin:12px 0 0;border:1px solid var(--line);border-radius:10px;background:#f8f9fc;padding:6px;cursor:zoom-in;display:grid;gap:6px;grid-template-columns:1fr}
+.orig.multi{grid-template-columns:1fr 1fr}
+.orig img{width:100%;display:block;border-radius:7px;aspect-ratio:16/10;object-fit:cover;object-position:top;background:#eef0f5;transition:filter .2s}
+.orig:hover img{filter:brightness(.96)}
+.orig figcaption{grid-column:1/-1;font-size:10.5px;color:var(--tx-3);text-align:center;padding:2px 0 1px;letter-spacing:.02em}
+.outro-img{width:100%;max-width:620px;display:block;border-radius:14px;border:1px solid var(--line);margin:20px auto 26px}
+.lbx{position:fixed;inset:0;z-index:200;background:rgba(16,20,30,.86);display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;padding:34px;cursor:zoom-out}
+.lbx.on{display:flex}
+.lbx img{max-width:min(1080px,94vw);max-height:84vh;border-radius:12px;box-shadow:0 24px 80px rgba(0,0,0,.5)}
+.lbx span{color:rgba(255,255,255,.65);font-size:12.5px;letter-spacing:.04em}
+.chd{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.chd .no{font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--ac);background:var(--ac-2);border-radius:6px;padding:2px 7px}
+.chd .zh{font-size:16px;font-weight:650;letter-spacing:-.01em}
+.chd .en{font-size:12px;color:var(--tx-3);font-family:var(--mono)}
+.cdsc{font-size:13.2px;color:var(--tx-2);margin:9px 0 0;line-height:1.66}
+.cprompt{margin:12px 0 0;background:#f7f9fd;border:1px solid #e8eefa;border-left:3px solid var(--ac);border-radius:9px;padding:10px 11px 9px;position:relative}
+.cprompt .lbl{font-size:10px;letter-spacing:.11em;font-weight:700;color:#7b91c4;font-family:var(--mono)}
+.cprompt p{margin:5px 0 0;font-size:12.4px;color:#26406f;font-family:var(--mono);line-height:1.62;padding-right:44px}
+.cpy{position:absolute;right:8px;top:8px;border:1px solid #dbe4f6;background:#fff;color:#5b7cc0;border-radius:6px;font-size:10.5px;padding:3px 7px;cursor:pointer;font-family:inherit;transition:.15s}
+.cpy:hover{background:var(--ac);border-color:var(--ac);color:#fff}
+.cpy.done{background:#e6f6ec;border-color:#bfe6cd;color:#2f8b52}
+
+/* 预览舞台 */
+.st{position:relative;height:140px;margin:14px 0 0;padding:12px;border:1px solid var(--line-2);border-radius:11px;background:linear-gradient(#fcfcfe,#f6f7fa);overflow:hidden}
+.st.tall{height:172px}
+.st .hint{position:absolute;right:7px;bottom:4px;font-size:9.5px;color:#a8b0be;pointer-events:none;z-index:9;letter-spacing:.02em}
+.dw{position:relative;width:100%;height:100%}
+/* 通用零件 */
+.bk{background:#dbe6fb;border-radius:4px;display:block}
+.bk.m{background:#bccff5}
+.bk.d{background:#8faeea}
+.bk.a{background:#3567d6}
+.ln{height:7px;border-radius:4px;background:#e5e8ef;display:block}
+.ln.a{background:#cddcf7}
+.pill{border-radius:999px;background:#e8edf8;color:#5b6b8c;font-size:9.5px;display:flex;align-items:center;justify-content:center;padding:0 9px;height:19px;white-space:nowrap}
+.mb{font-family:inherit;font-size:10px;padding:4px 9px;border-radius:6px;background:#3567d6;color:#fff;border:0;cursor:pointer;line-height:1.4}
+.mb.gh{background:#eef2fa;color:#3567d6}
+.bx{background:#fff;border:1px solid #e6e9ef;border-radius:9px;box-shadow:0 1px 3px rgba(20,30,60,.05)}
+
+/* 01-12 */
+.dg3{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:1fr;gap:6px}
+.dfw{display:flex;flex-wrap:wrap;gap:6px;align-content:center;justify-content:center}
+.dbe{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr);gap:6px}
+.dbe .big{grid-area:span 2/span 2;background:#8faeea}
+.dms{display:flex;gap:6px;height:100%}
+.dms .col{flex:1;display:flex;flex-direction:column;gap:6px}
+.dsp{display:grid;grid-template-columns:1fr 1fr;gap:9px;height:100%}
+.dsp .L{display:flex;flex-direction:column;gap:7px;justify-content:center}
+.dsp .R{background:linear-gradient(135deg,#dbe6fb,#9ab6ee);border-radius:9px}
+.dcd{display:flex;align-items:center;justify-content:center}
+.dcd .cd{width:158px;background:#fff;border:1px solid #e6e9ef;border-radius:11px;padding:9px;box-shadow:0 2px 9px rgba(20,30,60,.07)}
+.dcd .th{height:40px;border-radius:7px;background:linear-gradient(135deg,#dbe6fb,#b7cdf5);margin-bottom:8px}
+.dcd .ln{margin-top:5px}
+.dhz{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.dsb{display:grid;grid-template-columns:66px 1fr;gap:9px;height:100%}
+.dsb .L{display:flex;flex-direction:column;gap:5px;background:#fff;border:1px solid #e6e9ef;border-radius:9px;padding:7px}
+.dsb .L i{height:14px;border-radius:4px;background:#eef1f7;display:block}
+.dsb .L i.on{background:#8faeea}
+.dsb .R{background:#fff;border:1px solid #e6e9ef;border-radius:9px;padding:10px;display:flex;flex-direction:column;gap:7px}
+.dsc{height:100%;overflow:auto;border:1px solid #e2e5ec;border-radius:9px;background:#fff;scrollbar-width:thin}
+.dsc::-webkit-scrollbar{width:5px}
+.dsc::-webkit-scrollbar-thumb{background:#dcdfe7;border-radius:3px}
+.dsc .stk{position:sticky;top:0;background:#3567d6;color:#fff;font-size:10px;padding:6px 9px;z-index:2}
+.dsc .pad{padding:9px;display:flex;flex-direction:column;gap:8px}
+.dfix .ttl{font-size:10px;color:#8a93a3;padding:6px 9px;border-bottom:1px solid #eef0f5;position:sticky;top:0;background:#fff;z-index:2}
+.dfix .fab{position:absolute;right:9px;bottom:9px;width:28px;height:28px;border-radius:50%;background:#3567d6;color:#fff;display:grid;place-items:center;font-size:13px;box-shadow:0 4px 10px rgba(53,103,214,.35);z-index:3}
+.drs{container-type:inline-size;width:100%;height:100%;display:flex;justify-content:center;margin:0 auto;transition:width .7s cubic-bezier(.4,0,.2,1)}
+.drs .fr{width:100%;height:100%;background:#fff;border:1px solid #e2e5ec;border-radius:9px;padding:9px;display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:minmax(20px,1fr);gap:6px;align-content:center;overflow:hidden}
+@container (max-width:190px){.drs .fr{grid-template-columns:1fr;gap:5px}}
+.dws{display:grid;grid-template-columns:1fr 1fr;gap:10px;height:100%}
+.dws .p{border-radius:9px;padding:9px;display:flex;flex-direction:column}
+.dws .p span{font-size:9px;color:#a8b0be;margin-bottom:4px}
+.dws .tight{border:1px dashed #e0e3ea;justify-content:flex-start;gap:2px}
+.dws .loose{border:1px dashed #b7cdf5;justify-content:space-evenly}
+
+/* 13-24 */
+.dnv{display:flex;flex-direction:column;gap:10px;justify-content:center}
+.dnv .bar{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #e6e9ef;border-radius:9px;padding:0 12px;height:36px}
+.dnv .bar b{font-size:10.5px;color:#4c5566;font-weight:500}
+.dnv .bar b.on{color:#3567d6;font-weight:700;position:relative}
+.dnv .bar b.on::after{content:"";position:absolute;left:0;right:0;bottom:-10px;height:2px;background:#3567d6;border-radius:2px}
+.dnv .bar .lg{width:14px;height:14px;border-radius:5px;background:linear-gradient(135deg,#3567d6,#7ea6f7);margin-right:2px}
+.ddd{display:flex;justify-content:center;align-items:flex-start;padding-top:6px}
+.ddd .w{position:relative}
+.ddd .mu{position:absolute;left:0;top:calc(100% + 6px);width:132px;background:#fff;border:1px solid #e6e9ef;border-radius:9px;box-shadow:0 8px 22px rgba(20,30,60,.13);padding:5px;opacity:0;transform:translateY(-5px) scale(.97);pointer-events:none;transition:.17s;z-index:5}
+.ddd.open .mu{opacity:1;transform:none;pointer-events:auto}
+.ddd .mu i{display:block;font-size:10.5px;color:#4c5566;padding:5px 8px;border-radius:6px;font-style:normal;cursor:pointer}
+.ddd .mu i:hover{background:#f2f5fb;color:#3567d6}
+.ddd .mu i.br{border-top:1px solid #eef0f5;margin-top:3px;padding-top:7px;border-radius:0 0 6px 6px}
+.dmg{display:flex;flex-direction:column;justify-content:flex-start;padding-top:4px}
+.dmg .w{position:relative}
+.dmg .pv{position:absolute;left:50%;transform:translateX(-50%) translateY(-6px);top:calc(100% + 6px);width:280px;background:#fff;border:1px solid #e6e9ef;border-radius:11px;box-shadow:0 12px 30px rgba(20,30,60,.14);padding:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;opacity:0;pointer-events:none;transition:.2s;z-index:5}
+.dmg .w:hover .pv{opacity:1;transform:translateX(-50%);pointer-events:auto}
+.dmg .pv div b{display:block;font-size:10px;color:#3567d6;margin-bottom:5px}
+.dmg .pv div i{display:block;font-size:9.5px;color:#8a93a3;font-style:normal;margin-bottom:3px}
+.dtb{display:flex;flex-direction:column;gap:9px;justify-content:center}
+.dtb .hs{display:flex;gap:4px;background:#f1f3f8;padding:3px;border-radius:8px}
+.dtb .hs button{flex:1;border:0;background:transparent;font-family:inherit;font-size:10.5px;color:#69717f;padding:5px 0;border-radius:6px;cursor:pointer;transition:.16s}
+.dtb .hs button.on{background:#fff;color:#3567d6;font-weight:700;box-shadow:0 1px 3px rgba(20,30,60,.08)}
+.dtb .bd{background:#fff;border:1px solid #e6e9ef;border-radius:9px;padding:10px;font-size:10.5px;color:#4c5566;height:52px}
+.dac{display:flex;flex-direction:column;gap:5px;justify-content:center}
+.dac .it{background:#fff;border:1px solid #e6e9ef;border-radius:8px;overflow:hidden}
+.dac .it>button{width:100%;text-align:left;border:0;background:transparent;font-family:inherit;font-size:10.5px;color:#3d4552;padding:7px 10px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.dac .it>button i{font-style:normal;color:#a8b0be;transition:transform .22s}
+.dac .it.on>button i{transform:rotate(45deg)}
+.dac .p{max-height:0;overflow:hidden;transition:max-height .28s ease;font-size:10px;color:#8a93a3}
+.dac .it.on .p{max-height:52px}
+.dac .p span{display:block;padding:0 10px 9px;line-height:1.55}
+.dmd{display:flex;align-items:center;justify-content:center}
+.dmd .ovl{position:absolute;inset:0;background:rgba(24,32,48,.34);backdrop-filter:blur(1.5px);display:grid;place-items:center;opacity:0;pointer-events:none;transition:.2s;z-index:6}
+.dmd.open .ovl{opacity:1;pointer-events:auto}
+.dmd .dlg{width:172px;background:#fff;border-radius:11px;padding:12px;box-shadow:0 18px 40px rgba(20,30,60,.25);transform:scale(.94);transition:transform .24s cubic-bezier(.34,1.4,.64,1)}
+.dmd.open .dlg{transform:none}
+.drw{display:flex;align-items:center;justify-content:center;overflow:hidden}
+.drw .pn{position:absolute;right:0;top:0;bottom:0;width:132px;background:#fff;border-left:1px solid #e6e9ef;box-shadow:-8px 0 22px rgba(20,30,60,.1);transform:translateX(101%);transition:transform .3s cubic-bezier(.4,0,.2,1);padding:11px;display:flex;flex-direction:column;gap:7px;z-index:6}
+.drw.open .pn{transform:none}
+.drw .pn span{font-size:9.5px;color:#8a93a3}
+.dtt{display:flex;align-items:center;justify-content:center}
+.dtt .w{position:relative}
+.dtt .q{width:24px;height:24px;border-radius:50%;background:#eef2fa;color:#3567d6;border:0;font-size:12px;font-weight:700;cursor:help}
+.dtt .bub{position:absolute;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%) translateY(4px);background:#232a36;color:#fff;font-size:10px;padding:5px 9px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:.17s}
+.dtt .bub::after{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);border:4px solid transparent;border-top-color:#232a36}
+.dtt .w:hover .bub,.dtt .q:focus-visible+.bub{opacity:1;transform:translateX(-50%)}
+.dpp{display:flex;align-items:center;justify-content:center}
+.dpp .w{position:relative}
+.dpp .pn{position:absolute;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%) translateY(4px);width:158px;background:#fff;border:1px solid #e6e9ef;border-radius:10px;box-shadow:0 10px 26px rgba(20,30,60,.14);padding:9px;opacity:0;pointer-events:none;transition:.18s;z-index:6}
+.dpp.open .pn{opacity:1;transform:translateX(-50%);pointer-events:auto}
+.dpp .pn input{width:100%;height:24px;border:1px solid #e6e9ef;border-radius:6px;font-size:10px;padding:0 7px;color:#8a93a3;outline:none;font-family:var(--mono)}
+.dpp .pn .rw{display:flex;gap:5px;margin-top:7px}
+.dts{display:flex;align-items:center;justify-content:center}
+.dts .tst{position:absolute;right:11px;bottom:11px;background:#232a36;color:#fff;font-size:10.5px;padding:7px 12px;border-radius:8px;opacity:0;transform:translateY(8px);transition:.24s;display:flex;align-items:center;gap:6px;z-index:7}
+.dts .tst i{width:12px;height:12px;border-radius:50%;background:#4ec97f;display:grid;place-items:center;font-size:8px;font-style:normal;color:#fff}
+.dts.on .tst{opacity:1;transform:none}
+.dcr{display:flex;flex-direction:column;gap:8px;justify-content:center}
+.dcr .vp{overflow:hidden;border-radius:9px}
+.dcr .tk{display:flex;transition:transform .36s cubic-bezier(.4,0,.2,1)}
+.dcr .tk>i{flex:0 0 100%;height:62px;display:grid;place-items:center;font-style:normal;font-size:11px;color:#48587a;border-radius:9px}
+.dcr .rw{display:flex;align-items:center;justify-content:center;gap:9px}
+.dcr .rw button{border:1px solid #e2e5ec;background:#fff;border-radius:6px;width:22px;height:20px;cursor:pointer;color:#5b6b8c;font-size:10px;line-height:1}
+.dcr .dt{display:flex;gap:4px}
+.dcr .dt i{width:5px;height:5px;border-radius:50%;background:#d6dae3;cursor:pointer;transition:.2s}
+.dcr .dt i.on{background:#3567d6;width:13px;border-radius:3px}
+.dlb{display:flex;align-items:center;justify-content:center;gap:7px}
+.dlb .th{width:42px;height:42px;border-radius:8px;cursor:zoom-in;transition:transform .2s}
+.dlb .th:hover{transform:scale(1.06)}
+.dlb .ov{position:absolute;inset:0;background:rgba(16,22,34,.62);display:grid;place-items:center;opacity:0;pointer-events:none;transition:.2s;z-index:7}
+.dlb.open .ov{opacity:1;pointer-events:auto}
+.dlb .ov .bg2{width:150px;height:92px;border-radius:10px;position:relative;box-shadow:0 16px 40px rgba(0,0,0,.35)}
+.dlb .ov .bg2 button{position:absolute;right:-8px;top:-8px;width:20px;height:20px;border-radius:50%;border:0;background:#fff;color:#3d4552;font-size:11px;cursor:pointer;line-height:1}
+
+/* 25-36 */
+.dhv{display:flex;align-items:center;justify-content:center}
+.dhv .c{width:150px;background:#fff;border:1px solid #e6e9ef;border-radius:11px;padding:11px;box-shadow:0 1px 3px rgba(20,30,60,.06);transition:transform .24s ease,box-shadow .24s ease;cursor:pointer}
+.dhv .c:hover{transform:translateY(-6px);box-shadow:0 14px 30px rgba(20,30,60,.16)}
+.dfc{display:flex;flex-direction:column;gap:8px;justify-content:center;align-items:flex-start;padding-left:6px}
+.dfc input{width:150px;height:28px;border:1px solid #e2e5ec;border-radius:7px;padding:0 9px;font-size:11px;outline:none;font-family:inherit;transition:.18s}
+.dfc input:focus-visible{border-color:#3567d6;box-shadow:0 0 0 3px #e9f0fd}
+.dfc .mb:focus-visible{outline:2px solid #3567d6;outline-offset:2px}
+.dap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px}
+.dap button{font-family:inherit;font-size:11px;padding:8px 16px;border-radius:8px;border:0;background:#3567d6;color:#fff;cursor:pointer;transition:transform .1s ease,filter .1s ease;box-shadow:0 4px 12px rgba(53,103,214,.3)}
+.dap button:active{transform:scale(.96);filter:brightness(.94)}
+.dds{display:flex;flex-direction:column;gap:8px;justify-content:center;align-items:flex-start;padding-left:6px}
+.dds input{width:150px;height:28px;border:1px solid #e2e5ec;border-radius:7px;padding:0 9px;font-size:11px;outline:none;font-family:inherit}
+.dds input:focus{border-color:#3567d6}
+.dds .mb[disabled]{background:#e6e8ee;color:#a8b0be;cursor:not-allowed;box-shadow:none}
+.dds .rs{font-size:9.5px;color:#c0803a}
+.ddg{display:flex;flex-direction:column;gap:6px;justify-content:center}
+.ddg .it{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #e6e9ef;border-radius:8px;padding:6px 9px;font-size:10.5px;color:#4c5566;cursor:grab}
+.ddg .it .gr{color:#c3c9d4;font-size:12px;line-height:1}
+.ddg .it.dragging{opacity:.4;border-style:dashed;border-color:#3567d6}
+.ddg .it.over{border-color:#3567d6;box-shadow:0 0 0 3px #e9f0fd}
+.dsw{position:relative;overflow:hidden;border-radius:9px;height:100%}
+.dsw .tk{display:flex;height:100%;transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.dsw .tk>i{flex:0 0 100%;height:100%;display:grid;place-items:center;font-style:normal;color:#40507a;font-size:11px}
+.dsw .dt{position:absolute;left:0;right:0;bottom:7px;display:flex;justify-content:center;gap:4px}
+.dsw .dt i{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.8);box-shadow:0 0 0 1px rgba(0,0,0,.06)}
+.dsw .dt i.on{background:#3567d6;width:13px;border-radius:3px}
+.dsl{display:flex;flex-direction:column;height:100%;gap:7px}
+.dsl .ls{flex:1;overflow-y:auto;border:1px solid #e2e5ec;border-radius:9px;background:#fff;padding:8px;display:flex;flex-direction:column;gap:6px;overscroll-behavior:contain;scrollbar-width:thin}
+.dsl .ls::-webkit-scrollbar{width:5px}
+.dsl .ls::-webkit-scrollbar-thumb{background:#dcdfe7;border-radius:3px}
+.dsl .ls .m{display:flex;gap:7px;align-items:center}
+.dsl .ls .m .av{width:16px;height:16px;border-radius:50%;background:#dbe6fb;flex:0 0 16px}
+.dsl .ls .m .bd{flex:1;display:flex;flex-direction:column;gap:4px}
+.dsl .bar{display:flex;align-items:center;gap:7px;border:1px solid #e2e5ec;border-radius:8px;background:#fff;padding:5px 8px}
+.dsl .bar span{font-size:10px;color:#a8b0be}
+.dss{display:flex;flex-direction:column;gap:8px;height:100%}
+.dss .cs{display:flex;gap:6px}
+.dss .cs button{border:1px solid #e2e5ec;background:#fff;border-radius:6px;font-family:inherit;font-size:10px;padding:3px 9px;cursor:pointer;color:#4c5566}
+.dss .cs button:hover{border-color:#3567d6;color:#3567d6}
+.dss .vp{flex:1;overflow:auto;border:1px solid #e2e5ec;border-radius:9px;background:#fff;overscroll-behavior:contain}
+.dss .vp .pg{padding:9px;display:flex;flex-direction:column;gap:7px;border-bottom:1px dashed #eef0f5}
+.dss .vp .pg b{font-size:10px;color:#3567d6}
+.dhs2{overflow-x:auto;overflow-y:hidden;height:100%;scrollbar-width:thin}
+.dhs2 .row{display:flex;gap:8px;padding:2px}
+.dhs2 .cd{flex:0 0 92px;height:112px;border-radius:9px;background:#fff;border:1px solid #e6e9ef;padding:7px;display:flex;flex-direction:column;gap:6px}
+.dhs2 .cd .th{flex:1;border-radius:6px;background:linear-gradient(135deg,#e2ebfd,#bccff5)}
+.dsn{overflow-x:auto;height:100%;scroll-snap-type:x mandatory;display:flex;gap:8px;padding:0 4px 4px;scrollbar-width:thin}
+.dsn .cd{flex:0 0 78%;scroll-snap-align:center;border-radius:9px;display:grid;place-items:center;font-size:11px;color:#40507a}
+.dif{height:100%;overflow-y:auto;border:1px solid #e2e5ec;border-radius:9px;background:#fff;padding:8px;display:flex;flex-direction:column;gap:6px;overscroll-behavior:contain;scrollbar-width:thin}
+.dif .it{display:flex;gap:7px;align-items:center}
+.dif .it .av{width:15px;height:15px;border-radius:50%;background:#dbe6fb;flex:0 0 15px}
+.dif .st2{font-size:9.5px;color:#a8b0be;text-align:center;padding:3px}
+.dbt{height:100%;overflow-y:auto;border:1px solid #e2e5ec;border-radius:9px;background:#fff;padding:9px;display:flex;flex-direction:column;gap:7px;position:relative;overscroll-behavior:contain;scrollbar-width:thin}
+.dbt .fab{position:sticky;bottom:0;align-self:flex-end;width:26px;height:26px;border-radius:50%;border:0;background:#3567d6;color:#fff;font-size:12px;cursor:pointer;opacity:0;transform:translateY(6px);transition:.22s;box-shadow:0 4px 12px rgba(53,103,214,.35)}
+.dbt.on .fab{opacity:1;transform:none}
+
+/* 37-48 */
+.dtr{display:flex;align-items:center;justify-content:center;gap:12px}
+.dtr button{font-family:inherit;font-size:11px;padding:8px 15px;border:1px solid #3567d6;background:#eef3fd;color:#3567d6;border-radius:8px;cursor:pointer;transition:background-color .2s ease,color .2s ease}
+.dtr button:hover{background:#3567d6;color:#fff}
+.dea{display:flex;flex-direction:column;gap:13px;justify-content:center}
+.dea .rw{display:flex;align-items:center;gap:9px}
+.dea .rw span{font-size:9.5px;color:#8a93a3;width:52px;font-family:var(--mono)}
+.dea .trk{flex:1;height:8px;background:#eef0f5;border-radius:4px;position:relative;overflow:hidden}
+.dea .bl{position:absolute;left:0;top:0;bottom:0;width:26px;border-radius:4px;background:#3567d6;animation:easeLin 1.15s linear infinite}
+.dea .bl.eo{background:#7ea6f7;animation:easeOut 1.15s cubic-bezier(.22,1,.36,1) infinite}
+@keyframes easeLin{0%{left:0}45%{left:calc(100% - 26px)}55%{left:calc(100% - 26px)}100%{left:0}}
+@keyframes easeOut{0%{left:0}45%{left:calc(100% - 26px)}55%{left:calc(100% - 26px)}100%{left:0}}
+.dspg{display:flex;align-items:center;justify-content:center}
+.dspg .pn{width:120px;height:62px;border-radius:11px;background:linear-gradient(135deg,#dbe6fb,#9ab6ee);transform:scale(.7);opacity:.35;transition:transform .55s cubic-bezier(.34,1.56,.64,1),opacity .4s}
+.dspg.on .pn{transform:scale(1);opacity:1}
+.dfd{display:flex;flex-direction:column;gap:11px;align-items:center;justify-content:center}
+.dfd .tg{width:120px;height:46px;border-radius:10px;background:linear-gradient(135deg,#dbe6fb,#b7cdf5);display:grid;place-items:center;font-size:11px;color:#40507a;transition:opacity .25s ease}
+.dfd.off .tg{opacity:0}
+.dsd{display:flex;flex-direction:column;gap:11px;justify-content:center;align-items:center;overflow:hidden}
+.dsd .tg{width:120px;height:46px;border-radius:10px;background:linear-gradient(135deg,#dbe6fb,#b7cdf5);display:grid;place-items:center;font-size:11px;color:#40507a;transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.dsd.off .tg{transform:translateX(160px)}
+.dsc2{display:flex;align-items:center;justify-content:center}
+.dsc2 .fr{width:120px;height:86px;border:1.5px dashed #b7cdf5;border-radius:11px;padding:6px;cursor:pointer}
+.dsc2 .im{width:100%;height:100%;border-radius:7px;background:linear-gradient(135deg,#bccff5,#8faeea);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.dsc2 .fr:hover .im{transform:scale(1.05)}
+.drt{display:flex;align-items:center;justify-content:center;gap:14px}
+.drt .pl{width:26px;height:26px;border-radius:7px;background:#eef2fa;border:1px solid transparent;display:grid;place-items:center;font-size:19px;color:#3567d6;cursor:pointer;transition:transform .28s cubic-bezier(.4,0,.2,1);line-height:1;user-select:none}
+.drt.on .pl{transform:rotate(45deg)}
+.drt .txt{font-size:11px;color:#8a93a3}
+.dfl{display:flex;align-items:center;justify-content:center;perspective:700px}
+.dfl .c{width:140px;height:88px;position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1);cursor:pointer}
+.dfl .c:hover{transform:rotateY(12deg)}
+.dfl.on .c{transform:rotateY(180deg)}
+.dfl .fc{position:absolute;inset:0;backface-visibility:hidden;border-radius:11px;display:flex;flex-direction:column;justify-content:center;gap:5px;padding:12px;font-size:10.5px;color:#40507a}
+.dfl .f1{background:linear-gradient(135deg,#e2ebfd,#bccff5)}
+.dfl .f2{background:#2f3a4d;color:#e8edf6;transform:rotateY(180deg)}
+.dfl .fc b{font-size:12px}
+.dsg{display:flex;flex-direction:column;gap:10px;justify-content:center}
+.dsg .row{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.dsg .row i{height:34px;border-radius:8px;background:linear-gradient(135deg,#dbe6fb,#a9c2f0);opacity:0;transform:translateY(12px)}
+.dsg.on .row i{animation:stgIn .5s cubic-bezier(.22,1,.36,1) forwards}
+.dsg.on .row i:nth-child(2){animation-delay:.08s}
+.dsg.on .row i:nth-child(3){animation-delay:.16s}
+.dsg.on .row i:nth-child(4){animation-delay:.24s}
+@keyframes stgIn{to{opacity:1;transform:none}}
+.dpt{position:relative}
+.dpt .pg{position:absolute;inset:0;background:#fff;border:1px solid #e6e9ef;border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:7px;transition:opacity .3s ease,transform .3s ease}
+.dpt .p2{opacity:0;transform:translateX(10px)}
+.dpt.on .p1{opacity:0;transform:translateX(-10px)}
+.dpt.on .p2{opacity:1;transform:none}
+.dld{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.dld .sp{width:26px;height:26px;border-radius:50%;border:3px solid #e2e8f5;border-top-color:#3567d6;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.dld .tx{font-size:10.5px;color:#8a93a3}
+.dsk{display:flex;flex-direction:column;gap:8px;justify-content:center}
+.dsk .sh{height:9px;border-radius:5px;background:linear-gradient(90deg,#eef0f5 25%,#e2e6ee 37%,#eef0f5 63%);background-size:400% 100%;animation:shimmer 1.4s ease infinite}
+.dsk .sh.big{height:34px;border-radius:8px}
+@keyframes shimmer{0%{background-position:100% 0}100%{background-position:0 0}}
+.dsk .real{display:none;flex-direction:column;gap:7px}
+.dsk.done .sh{display:none}
+.dsk.done .real{display:flex}
+
+/* 49-60 */
+.dmq{display:flex;flex-direction:column;gap:11px;justify-content:center;overflow:hidden}
+.dmq .msk{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.dmq .rl{display:flex;gap:9px;width:max-content;animation:mq 9s linear infinite}
+.dmq:hover .rl{animation-play-state:paused}
+@keyframes mq{to{transform:translateX(-50%)}}
+.dmq .av{width:32px;height:32px;border-radius:50%;flex:0 0 32px;background:linear-gradient(135deg,#dbe6fb,#9ab6ee)}
+.dpx2{overflow:auto;height:100%;border:1px solid #e2e5ec;border-radius:9px;position:relative;background:#fff;overscroll-behavior:contain;scrollbar-width:thin}
+.dpx2 .bg{position:absolute;left:0;right:0;top:0;height:100%;background:linear-gradient(180deg,#e6eeff,#f7f9fe 60%,#eef3fd);will-change:transform}
+.dpx2 .orb{position:absolute;width:58px;height:58px;border-radius:50%;background:radial-gradient(circle at 35% 32%,#fff,#bccff5);opacity:.95}
+.dpx2 .content{position:relative;padding:14px;display:flex;flex-direction:column;gap:10px;justify-content:center;height:290px}
+.dpx2 .content b{font-size:12px;color:#2d3a55;text-align:center}
+.dsr{overflow-y:auto;height:100%;border:1px solid #e2e5ec;border-radius:9px;background:#fff;padding:10px;display:flex;flex-direction:column;gap:9px;overscroll-behavior:contain;scrollbar-width:thin}
+.dsr .it{height:38px;border-radius:9px;background:linear-gradient(135deg,#e2ebfd,#bccff5);opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s cubic-bezier(.22,1,.36,1);display:grid;place-items:center;font-size:10.5px;color:#40507a;flex:0 0 auto}
+.dsr .it.in{opacity:1;transform:none}
+.dpr{height:100%;display:flex;flex-direction:column;border:1px solid #e2e5ec;border-radius:9px;overflow:hidden;background:#fff}
+.dpr .bar{height:3px;background:#eef0f5;position:relative;flex:0 0 3px}
+.dpr .bar i{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#3567d6,#7ea6f7);border-radius:2px}
+.dpr .bd{flex:1;overflow-y:auto;padding:9px;display:flex;flex-direction:column;gap:7px;overscroll-behavior:contain;scrollbar-width:none}
+.dpr .bd::-webkit-scrollbar{display:none}
+.dtw{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:11px}
+.dtw .tx{font-family:var(--mono);font-size:12.5px;color:#26406f;min-height:22px;letter-spacing:.01em}
+.dtw .tx::after{content:"";display:inline-block;width:1.5px;height:13px;background:#3567d6;margin-left:2px;vertical-align:-2px;animation:blink 1s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+.drv{display:flex;flex-direction:column;gap:9px;justify-content:center;padding:0 6px}
+.drv .ln2{overflow:hidden;padding-bottom:2px}
+.drv .ln2 i{display:block;height:13px;border-radius:4px;background:#bccff5;transform:translateY(110%);transition:transform .6s cubic-bezier(.22,1,.36,1);font-style:normal}
+.drv .ln2:nth-child(2) i{width:86%}
+.drv .ln2:nth-child(3) i{width:64%}
+.drv.on .ln2 i{transform:none}
+.drv.on .ln2:nth-child(2) i{transition-delay:.09s}
+.drv.on .ln2:nth-child(3) i{transition-delay:.18s}
+.dstx{display:flex;align-items:center;justify-content:center}
+.dstx .tx{font-family:var(--mono);font-size:13.5px;font-weight:600;color:#26406f;letter-spacing:.02em}
+.dcu{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-content:center}
+.dcu .it{background:#fff;border:1px solid #e6e9ef;border-radius:10px;padding:9px 7px;text-align:center}
+.dcu .it b{display:block;font-size:17px;color:#3567d6;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.dcu .it span{font-size:9px;color:#a8b0be}
+.dtl{display:flex;align-items:center;justify-content:center;perspective:600px}
+.dtl .c{width:120px;height:82px;border-radius:12px;background:linear-gradient(135deg,#e2ebfd,#a9c2f0);display:grid;place-items:center;font-size:10.5px;color:#3d4f75;box-shadow:0 10px 24px rgba(20,30,60,.14);transition:transform .12s ease-out;will-change:transform}
+.dmg2{display:flex;align-items:center;justify-content:center}
+.dmg2 button{font-family:inherit;font-size:11px;padding:9px 18px;border-radius:999px;border:0;background:#3567d6;color:#fff;cursor:pointer;transition:transform .22s cubic-bezier(.34,1.4,.64,1);box-shadow:0 6px 16px rgba(53,103,214,.32);will-change:transform}
+.dcf{overflow:hidden;border-radius:9px;background:#fff;border:1px solid #e2e5ec;display:flex;flex-direction:column;justify-content:center;padding:0 14px;cursor:none}
+.dcf .rw{font-size:12px;color:#69717f;padding:8px 0;border-bottom:1px dashed #eef0f5;display:flex;justify-content:space-between}
+.dcf .rw:last-child{border-bottom:0}
+.dcf .dot{position:absolute;width:46px;height:46px;border-radius:9px;background:linear-gradient(135deg,#bccff5,#8faeea);box-shadow:0 8px 18px rgba(20,30,60,.18);opacity:0;pointer-events:none;transform:translate(-50%,-50%) scale(.6);transition:opacity .2s,transform .2s}
+.dcf.on .dot{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.dtr2{overflow:hidden;border-radius:9px;background:#fff;border:1px solid #e2e5ec;display:grid;place-items:center}
+.dtr2 span{font-size:10.5px;color:#a8b0be}
+.dtr2 .pt{position:absolute;width:7px;height:7px;border-radius:50%;background:#3567d6;pointer-events:none;transform:translate(-50%,-50%);animation:trailOut .65s ease-out forwards}
+@keyframes trailOut{to{opacity:0;transform:translate(-50%,-50%) scale(.2)}}
+
+/* 61-72 */
+.dgl{position:relative;border-radius:9px;overflow:hidden;height:100%;background:linear-gradient(125deg,#8faeea,#6f9ce8 40%,#a9c2f0 75%,#c8b6f0)}
+.dgl .bl{position:absolute;border-radius:50%;background:rgba(255,255,255,.35)}
+.dgl .bd{position:absolute;inset:0;display:grid;place-items:center}
+.dgl .gp{width:74%;background:rgba(255,255,255,.44);border:1px solid rgba(255,255,255,.72);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);border-radius:12px;padding:11px 13px;box-shadow:0 10px 28px rgba(30,50,90,.18)}
+.dgl .gp b{display:block;font-size:11.5px;color:#1e2a44}
+.dgl .gp span{font-size:9.5px;color:#3c4a68}
+.dgr{display:flex;flex-direction:column;gap:8px;justify-content:center}
+.dgr .big{height:52px;border-radius:10px;background:linear-gradient(90deg,#1f3a7a,#2f8b8f)}
+.dgr .row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.dgr .sw{height:32px;border-radius:8px;cursor:pointer;border:1px solid rgba(0,0,0,.05)}
+.dgr .sw:nth-child(1){background:linear-gradient(90deg,#1f3a7a,#2f8b8f)}
+.dgr .sw:nth-child(2){background:radial-gradient(circle at 40% 40%,#6f9ce8,#1f3a7a)}
+.dgr .sw:nth-child(3){background:conic-gradient(from 210deg,#1f3a7a,#6f9ce8,#2f8b8f,#a9c2f0)}
+.dgn{display:grid;grid-template-columns:1fr 1fr;border-radius:9px;overflow:hidden}
+.dgn .half{position:relative;display:grid;place-items:center;overflow:hidden;font-size:10px;color:#fff;background:linear-gradient(135deg,#2c3b5c,#4a6ba8)}
+.dgn .half.b::after{content:"";position:absolute;inset:0;opacity:.34;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n2)'/%3E%3C/svg%3E")}
+.dbl{position:relative;border-radius:9px;overflow:hidden;background:#fff;border:1px solid #e2e5ec;padding:10px;display:flex;flex-direction:column;gap:7px}
+.dbl .bgc{filter:blur(3.4px);display:flex;flex-direction:column;gap:8px}
+.dbl .bd{position:absolute;inset:0;display:grid;place-items:center}
+.dbl .dlg{background:#fff;border:1px solid #e6e9ef;border-radius:10px;padding:11px 13px;box-shadow:0 12px 30px rgba(20,30,60,.2);font-size:10.5px;color:#3d4552;text-align:center}
+.dgw{display:flex;align-items:center;justify-content:center}
+.dgw button{font-family:inherit;font-size:11px;padding:9px 17px;border-radius:9px;border:0;background:#3567d6;color:#fff;cursor:pointer;animation:glowPulse 2s ease-in-out infinite}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 0 0 rgba(53,103,214,.45),0 4px 14px rgba(53,103,214,.28)}50%{box-shadow:0 0 0 10px rgba(53,103,214,0),0 4px 14px rgba(53,103,214,.28)}}
+.dcp{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.dcp .sp{width:84px;height:84px;background:linear-gradient(135deg,#8faeea,#3567d6);clip-path:circle(50%);transition:clip-path .55s cubic-bezier(.4,0,.2,1)}
+.dcp .sp.s1{clip-path:polygon(50% 0,100% 38%,82% 100%,18% 100%,0 38%)}
+.dcp .sp.s2{clip-path:polygon(0 0,100% 0,100% 72%,50% 100%,0 72%)}
+.dmsk{display:flex;flex-direction:column;gap:9px;justify-content:center;overflow:hidden}
+.dmsk .msk{overflow:hidden;display:flex;align-items:center;gap:8px}
+.dmsk .msk.soft{-webkit-mask-image:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent);mask-image:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent)}
+.dmsk .rl{display:flex;gap:8px;width:max-content;animation:mq 12s linear infinite}
+.dmsk .av{width:26px;height:26px;border-radius:7px;flex:0 0 26px;background:linear-gradient(135deg,#bccff5,#8faeea)}
+.dmsk .lb{font-size:9px;color:#a8b0be;width:62px;flex:0 0 62px}
+.ddi{display:flex;align-items:center;justify-content:center}
+.ddi .im{width:110px;height:76px;border-radius:10px;background:linear-gradient(135deg,#8faeea,#3567d6);transition:transform .3s ease,filter .3s ease;cursor:pointer}
+.ddi .im:hover{animation:wobble 1.1s ease-in-out infinite}
+@keyframes wobble{0%,100%{transform:skewX(0) scale(1);filter:blur(0)}25%{transform:skewX(2.5deg) scale(1.02,.98);filter:blur(.4px)}50%{transform:skewX(-2deg) scale(.99,1.02);filter:blur(.7px)}75%{transform:skewX(1.5deg) scale(1.01,.99);filter:blur(.3px)}}
+.dgy{display:flex;align-items:center;justify-content:center}
+.dgy .goo{filter:url(#gooFx);display:flex;gap:14px;align-items:center}
+.dgy .bl{width:34px;height:34px;border-radius:50%;background:#3567d6}
+.dgy .bl:nth-child(1){animation:goo1 2.4s ease-in-out infinite}
+.dgy .bl:nth-child(2){animation:goo2 2.4s ease-in-out infinite}
+@keyframes goo1{0%,100%{transform:translateX(0)}50%{transform:translateX(9px)}}
+@keyframes goo2{0%,100%{transform:translateX(0)}50%{transform:translateX(-9px)}}
+.dpc{overflow:hidden;border-radius:9px;height:100%;background:linear-gradient(160deg,#f7f9fe,#e9effb);position:relative}
+.dpc .p{position:absolute;border-radius:50%;background:rgba(53,103,214,.4);animation:float 6s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.dpc .tx{position:absolute;inset:0;display:grid;place-items:center;font-size:11.5px;color:#3d4f75;letter-spacing:.02em}
+.dsl2{position:relative;border-radius:9px;overflow:hidden;height:100%;background:#e8ecf4;display:grid;place-items:center;cursor:crosshair}
+.dsl2::before{content:"";position:absolute;width:150px;height:150px;left:var(--x,50%);top:var(--y,50%);transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.98),rgba(215,228,252,.5) 45%,rgba(255,255,255,0) 70%);opacity:0;transition:opacity .3s}
+.dsl2.on::before{opacity:1}
+.dsl2 b{position:relative;font-size:11.5px;color:#5d6a80;font-weight:600}
+.drf{display:flex;flex-direction:column;align-items:center;justify-content:center}
+.drf .ob{width:78px;height:48px;border-radius:11px;background:linear-gradient(135deg,#8faeea,#3567d6)}
+.drf .mir{width:78px;height:36px;border-radius:11px;background:linear-gradient(135deg,#8faeea,#3567d6);transform:scaleY(-1);margin-top:3px;-webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.42),transparent);mask-image:linear-gradient(180deg,rgba(0,0,0,.42),transparent)}
+
+/* 73-80 */
+.dmn{display:flex;flex-direction:column;justify-content:center;padding:0 12px;gap:9px}
+.dmn b{font-size:20px;letter-spacing:-.03em;color:#1b1f27;font-weight:600;line-height:1.2}
+.dmn span{font-size:10px;color:#b3bac6;letter-spacing:.14em}
+.dmn .rv{width:26px;height:1px;background:#1b1f27;margin-top:7px}
+.dbr{display:flex;flex-direction:column;justify-content:center;border:2px solid #111;padding:12px;background:#fff;width:100%;height:100%}
+.dbr b{font-size:15px;color:#111;line-height:1.15}
+.dbr u{font-size:10px;color:#111;text-decoration-thickness:2px;text-underline-offset:3px;margin-top:7px}
+.dbr hr{border:0;border-top:2px solid #111;margin:9px 0}
+.dbr span{font-size:9px;color:#444;font-family:var(--mono)}
+.dnb{display:flex;align-items:center;justify-content:center}
+.dnb .c{background:#ffe066;border:2px solid #111;border-radius:10px;padding:13px 15px;box-shadow:5px 5px 0 #111;transform:translate(-2px,-2px);transition:transform .16s ease,box-shadow .16s ease;cursor:pointer}
+.dnb .c:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 #111}
+.dnb .c b{font-size:12px;color:#111;font-weight:800}
+.dnb .c span{display:block;font-size:9.5px;color:#3a3a3a;margin-top:3px}
+.dnm{display:flex;align-items:center;justify-content:center;gap:16px;background:#eceef3;border-radius:9px;height:100%}
+.dnm .k{width:56px;height:56px;border-radius:16px;background:#eceef3;box-shadow:6px 6px 12px #d3d6de,-6px -6px 12px #fff;display:grid;place-items:center;font-size:10px;color:#7a8290;cursor:pointer;transition:box-shadow .25s,color .25s}
+.dnm .k.on{box-shadow:inset 5px 5px 10px #d3d6de,inset -5px -5px 10px #fff;color:#3567d6}
+.dsk2{display:flex;align-items:center;justify-content:center}
+.dsk2 .knob{width:66px;height:66px;border-radius:50%;background:conic-gradient(from 0deg,#d8dce4,#f4f6fa,#cdd2dc,#f6f8fb,#d8dce4);box-shadow:0 6px 14px rgba(20,30,60,.22),inset 0 1px 1px #fff;position:relative;cursor:grab;transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.dsk2 .knob::after{content:"";position:absolute;left:50%;top:7px;width:3px;height:15px;border-radius:2px;background:#4c5566;transform:translateX(-50%)}
+.dsk2 .knob i{position:absolute;inset:9px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff,#e2e6ee 60%,#cdd3de)}
+.drt2{display:flex;align-items:center;justify-content:center}
+.drt2 .win{width:90%;background:#d4d0c8;border:2px solid #fff;border-right-color:#808080;border-bottom-color:#808080;padding:2px}
+.drt2 .tb{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(90deg,#000080,#3d6fbd);color:#fff;font-size:9.5px;padding:2px 5px;font-family:var(--mono)}
+.drt2 .tb em{font-style:normal;background:#d4d0c8;color:#000;border:1px solid #fff;border-right-color:#808080;border-bottom-color:#808080;padding:0 3px;font-size:8px}
+.drt2 .ct{padding:9px 6px;display:flex;flex-direction:column;gap:7px;align-items:flex-start}
+.drt2 .bt{font-family:var(--mono);font-size:9px;background:#d4d0c8;border:2px solid #fff;border-right-color:#808080;border-bottom-color:#808080;padding:2px 9px;color:#000}
+.drt2 .ic{width:18px;height:18px;background:#c0c0c0;border:2px solid #fff;border-right-color:#808080;border-bottom-color:#808080}
+.dpx{display:grid;grid-template-columns:repeat(9,1fr);width:108px;height:108px;margin:0 auto}
+.dpx i{display:block}
+.dpx i.on{background:#3567d6}
+.dpx i.hi{background:#7ea6f7}
+.das{display:grid;place-items:center}
+.das pre{margin:0;font-family:var(--mono);font-size:9px;line-height:1.3;color:#dbe6fb;background:#232a36;padding:9px 14px;border-radius:9px}
+
+/* 结语 */
+.outro{margin-top:56px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:32px 36px;box-shadow:var(--shadow)}
+.outro h3{margin:0 0 14px;font-size:17px;font-weight:650}
+.outro p{margin:0 0 12px;font-size:14px;color:var(--tx-2);line-height:1.75}
+.outro p:last-of-type{margin-bottom:0}
+.outro strong{color:var(--tx);font-weight:650}
+.outro .kbd{font-family:var(--mono);font-size:12px;background:#f4f6fa;border:1px solid var(--line);border-radius:5px;padding:1px 5px;color:#3d506e;margin:0 2px}
+.index{margin-top:22px;padding-top:20px;border-top:1px dashed var(--line)}
+.index h4{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#9aa3b2;margin:0 0 12px;font-weight:600}
+.index .chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:6px}
+.index .chips button{border:1px solid var(--line);background:#fbfcfe;border-radius:7px;padding:4px 8px;font-size:11.5px;color:var(--tx-2);cursor:pointer;text-align:left;font-family:inherit;display:flex;gap:6px;transition:.15s}
+.index .chips button:hover{border-color:var(--ac);color:var(--ac);background:var(--ac-2)}
+.index .chips button em{font-style:normal;font-family:var(--mono);font-size:10px;color:#b3bac6;width:15px;flex:0 0 15px}
+.foot{margin-top:26px;text-align:center;font-size:12px;color:#a8b0be;line-height:1.8}
+.empty{display:none;background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:52px 20px;text-align:center;color:var(--tx-3);font-size:13.5px}
+.empty.on{display:block}
+.empty b{display:block;font-size:15px;color:var(--tx-2);margin-bottom:5px}
+.totop{position:fixed;right:24px;bottom:26px;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ac);font-size:15px;cursor:pointer;box-shadow:var(--shadow-2);opacity:0;transform:translateY(10px) scale(.94);pointer-events:none;transition:.24s;z-index:60}
+.totop.on{opacity:1;transform:none;pointer-events:auto}
+.totop:hover{background:var(--ac);color:#fff;border-color:var(--ac)}
+.gtoast{position:fixed;right:24px;bottom:76px;background:#232a36;color:#fff;font-size:12.5px;padding:9px 15px;border-radius:9px;box-shadow:0 12px 30px rgba(20,30,60,.26);opacity:0;transform:translateY(10px);transition:.24s;z-index:70;display:flex;align-items:center;gap:7px;pointer-events:none}
+.gtoast.on{opacity:1;transform:none}
+.gtoast i{width:14px;height:14px;border-radius:50%;background:#4ec97f;display:grid;place-items:center;font-size:9px;font-style:normal}
+.card:not(.in) .st *{animation-play-state:paused}
+
+@media (max-width:1080px){
+  .layout{grid-template-columns:1fr;gap:0}
+  .side{position:static;max-height:none;overflow:visible;padding:20px 0 0;border-bottom:1px solid var(--line);margin-bottom:6px}
+  .side nav{display:flex;flex-wrap:wrap;gap:5px}
+  .side nav a{border-left:0;border:1px solid var(--line);background:#fff;padding:5px 10px}
+  .side nav a .ct{display:none}
+}
+@media (max-width:720px){
+  .topbar-in{height:auto;padding:10px 14px;flex-wrap:wrap;gap:9px}
+  .search{max-width:none;order:3;flex:1 0 100%}
+  .layout{padding:0 14px 70px}
+  .hero{padding:26px 20px}
+  .hero h1{font-size:24px}
+  .cards{grid-template-columns:1fr}
+  .outro{padding:24px 20px}
+  .totop{right:14px;bottom:16px}
+  .gtoast{right:14px;left:14px;bottom:64px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand"><span class="dot">85</span>前端效果词典</div>
+    <div class="search" id="searchWrap">
+      <span class="ic">⌕</span>
+      <input id="q" type="search" placeholder="搜索：毛玻璃 / grid / 走马灯 / 滚动 …" autocomplete="off">
+      <button class="clr" id="clr" title="清空">✕</button>
+    </div>
+    <div class="tb-meta" id="meta">共 <b>80</b> 条</div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="side">
+    <h4>常用入口</h4>
+    <div class="quick" id="quick"></div>
+    <h4>目录</h4>
+    <nav id="nav"></nav>
+  </aside>
+
+  <main class="main">
+    <section class="hero">
+      <img class="qmark" src="assets/intro.png" alt="" aria-hidden="true">
+      <h1>给 Vibe Coding 小白的<br>前端效果词典</h1>
+      <p class="lead">Vibe Coding 的时候，有些效果明明见过却不知道叫什么。于是只能说：<em>这个地方再动一下，像那个网站一样，鼠标放上去有点反应。</em>这篇就当一本随手查的小词典。</p>
+      <div class="byline">
+        <span>收录 80 个常见的前端布局、组件、交互、动效和风格词</span>
+        <span class="sep"></span>
+        <span>每条含中英文名 + 效果示例 + 一句可直接改着用的 prompt</span>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>80</b><span>词条</span></div>
+        <div class="stat"><b>7</b><span>大类</span></div>
+        <div class="stat"><b>80</b><span>可交互效果预览</span></div>
+        <div class="stat"><b>1 键</b><span>复制 prompt</span></div>
+      </div>
+      <div class="jump" id="jump"></div>
+      <p class="note">注：本文对前端和 UX 大佬来说只是再基础不过的知识，但对 Vibe Coding 小白来说可直接参考很多。本页 = 原文全文 + 原文全部配图 + 每个词条一个真实可交互的效果预览，双击即可打开。</p>
+    </section>
+
+    <div id="sections"></div>
+    <div class="empty" id="empty"><b>没找到匹配的词条</b>换个关键词试试，比如「滚动」「弹窗」「毛玻璃」</div>
+
+    <section class="outro">
+      <h3>Ⅷ · 结语</h3>
+      <p>说需求时不需要把术语全部堆进去。<strong>每次挑一个你想要实现的变化，给出作用对象和触发方式，先看结果再往下改。</strong></p>
+      <p>动效还可以多交代三件事：<span class="kbd">能不能暂停</span><span class="kbd">手机怎么操作</span><span class="kbd">开启"减少动态效果"时怎么处理</span>。好看的效果也应该让人读得下去、点得明白。</p>
+      <p>认识一个效果的名字，只是多了一种表达选择。<strong>最后要不要用、用到什么程度，还是看它有没有帮内容说话。</strong></p>
+      <img class="outro-img" src="assets/outro.png" alt="结语插画" loading="lazy">
+      <div class="index">
+        <h4>词汇表 · 80 条速查</h4>
+        <div class="chips" id="indexChips"></div>
+      </div>
+      <p class="foot">原文《给 Vibe Coding 小白的前端效果词典》· 公众号：埃弗里特鱼 · 本页为原文内容的网页化重建，原文配图取自原文章，效果预览为本页额外添加。</p>
+    </section>
+  </main>
+</div>
+
+<button class="totop" id="totop" title="回到顶部">↑</button>
+<div class="lbx" id="lbx" role="dialog" aria-label="查看原图"><img id="lbxImg" alt="原文配图大图"><span>点击任意处或按 Esc 关闭</span></div>
+<div class="gtoast" id="gtoast"><i>✓</i><span id="gtoastTx">已复制</span></div>
+
+<script>
+/* ===================== 词条数据（原文照录） ===================== */
+const CATS = [
+  {id:'c1', rm:'Ⅰ', name:'布局与页面结构', desc:'先把东西放对位置。这里主要回答内容怎么分区、怎么对齐、不同屏幕怎么排。', from:1, to:12},
+  {id:'c2', rm:'Ⅱ', name:'组件与信息呈现', desc:'这些是页面上的常见零件。说清楚用哪种组件，比硬描述省事。', from:13, to:24},
+  {id:'c3', rm:'Ⅲ', name:'触发方式与滚动行为', desc:'交代什么时候发生变化。点击、悬停、聚焦、拖动和滚动，不是同一件事。', from:25, to:36},
+  {id:'c4', rm:'Ⅳ', name:'基础动效与加载', desc:'再交代怎么动。方向、距离、时长、节奏，以及播完要不要停，都可以写进 prompt。', from:37, to:48},
+  {id:'c5', rm:'Ⅴ', name:'连续展示与跟随效果', desc:'这一组更接近「我在某个网站见过的那个效果」。重点看它跟什么联动、是否连续播放。', from:49, to:60},
+  {id:'c6', rm:'Ⅵ', name:'视觉效果与材质', desc:'这些词描述图像怎样呈现。大部分可以只用在一个局部，不必铺满整个页面。', from:61, to:72},
+  {id:'c7', rm:'Ⅶ', name:'整体视觉风格', desc:'风格名只是沟通起点。下面是常见外观示意；附一张你喜欢的参考图，会更准确。', from:73, to:80}
+];
+
+const TERMS = [
+{n:1, zh:'网格布局', en:'Grid Layout', d:'按行和列摆放内容，卡片之间有清楚的对齐关系。Grid 是布局方法，不限定配色或风格。', p:'把作品区改成 Grid 网格布局，电脑端三列、手机端一列，卡片间距统一'},
+{n:2, zh:'弹性布局', en:'Flexbox', d:'更适合沿一个方向排队，比如一行导航或一列按钮，也能自动换行。', p:'把这排标签改成 Flex 布局，间距一致，放不下就换到下一行'},
+{n:3, zh:'便当盒布局', en:'Bento Grid', d:'大小不同的区块拼成整齐的一组，像便当盒分格。它是一种版式的叫法，不是专用组件。', p:'把个人介绍改成 Bento Grid，简介占大格，技能、地点和联系方式放小格'},
+{n:4, zh:'瀑布流', en:'Masonry Layout', d:'卡片高度不同，按列紧凑排布，不要求每一行底部对齐。常见于图片收藏页（比如 Pin）。', p:'把图片收藏页改成瀑布流，保留图片比例，不要把所有图片裁成一样高'},
+{n:5, zh:'分屏布局', en:'Split-screen Layout', d:'把主要画面分成两块，常用来并排放文字和视觉内容。', p:'首页做成左右分屏，左边标题和按钮，右边作品图；手机端上下排列'},
+{n:6, zh:'卡片式布局', en:'Card Layout', d:'把一条内容的图片、标题和信息收在同一张卡片里，方便成组浏览。', p:'每个工具做成一张卡片，包含图标、名称、两行简介和访问按钮'},
+{n:7, zh:'首屏主视觉', en:'Hero Section', d:'页面开头最醒目的内容区，用标题、图片和主要按钮说明这个网站是做什么的。', p:'首页加一个 Hero 首屏，只放一句主标题、一句说明和一个开始使用按钮'},
+{n:8, zh:'侧边栏', en:'Sidebar', d:'把目录、导航或筛选放到页面侧面，正文留在主区域。', p:'文档页左侧放章节侧边栏，当前章节高亮，点击可以跳转。'},
+{n:9, zh:'粘性定位', en:'Sticky Positioning', d:'元素先正常滚动，到指定位置后贴住；通常仍受所在容器的边界限制。', p:'让文章目录用 Sticky 定位，滚到顶部后停在导航栏下面，到文章结束时停止跟随。'},
+{n:10, zh:'固定定位', en:'Fixed Positioning', d:'通常固定在浏览器视口某处，页面滚动时位置不变；某些祖先样式会改变参照范围。', p:'把帮助按钮固定在页面右下角，滚动时保持原位，别挡住正文。'},
+{n:11, zh:'响应式布局', en:'Responsive Layout', d:'同一页面随可用宽度重新排布，电脑和手机都能读，不是把桌面版整体缩小。没有加响应式布局的网页在手机端显示可能会很奇怪。', p:'让这个页面适配手机，三列改一列，导航折叠，正文不要出现横向滚动条。'},
+{n:12, zh:'留白', en:'Whitespace', d:'内容之间刻意留下的空处，不一定是白色。它帮助分组，也让重点更容易被看见。', p:'拉开标题、正文和按钮之间的距离，增加留白，但不要让同组内容散开。'},
+{n:13, zh:'导航栏', en:'Navigation Bar', d:'用一组入口告诉读者能去哪里，通常放在顶部。它可以固定，也可以跟着页面滚走。', p:'顶部加导航栏，包含作品、关于、联系，当前页面对应的入口高亮。'},
+{n:14, zh:'下拉菜单', en:'Dropdown Menu', d:'点击入口后，在附近展开一列选项；选择或点外面后收起。', p:'头像旁边加下拉菜单，点击显示个人资料和退出，点击外部关闭。'},
+{n:15, zh:'大型下拉菜单', en:'Mega Menu', d:'展开后不只是一列选项，而是一整块分组导航，适合入口比较多的网站。', p:'把产品导航做成 Mega Menu，按用途分三列，每个入口配一句短说明。'},
+{n:16, zh:'标签页', en:'Tabs', d:'几个标签共用一块内容区域，切换标签就换内容，通常不离开当前页面。', p:'把产品介绍分成概览、参数、评价三个 Tabs，点击只切换下方内容。'},
+{n:17, zh:'手风琴折叠面板', en:'Accordion', d:'点击标题展开对应内容，再点可以收起，是否允许同时展开多项可以另行指定。', p:'把常见问题做成手风琴，点击问题展开答案，同一时间只展开一项。'},
+{n:18, zh:'模态弹窗', en:'Modal Dialog', d:'在当前页面上方打开一层内容，打开期间通常不能操作背后的页面。', p:'点击删除时打开确认弹窗，提供取消和确认；打开后键盘焦点留在弹窗内。'},
+{n:19, zh:'抽屉面板', en:'Drawer', d:'从屏幕边缘滑出的面板，常装筛选、购物车或设置；可以是模态也可以不是。', p:'点击筛选后，从右侧滑出一个抽屉，里面放筛选项和应用按钮。'},
+{n:20, zh:'悬浮提示', en:'Tooltip', d:'鼠标停留或键盘聚焦时出现的一小句说明，通常不承载按钮等复杂操作。', p:'给这个问号图标加 Tooltip，悬停或键盘聚焦时显示费用说明。'},
+{n:21, zh:'弹出浮层', en:'Popover', d:'靠近触发按钮出现的小面板，可以装说明、输入框和操作，通常不锁住整个页面。', p:'点击分享按钮弹出 Popover，里面放链接输入框和复制按钮。'},
+{n:22, zh:'轻提示', en:'Toast', d:'短暂出现的结果反馈，比如已复制、已保存，通常不打断当前操作。', p:'复制成功后在右下角显示 Toast：链接已复制，两秒后自动消失。'},
+{n:23, zh:'轮播', en:'Carousel', d:'按页或按组切换内容，通常有上一张、下一张或圆点。它和连续流动的走马灯不同。', p:'把案例图做成轮播，每次显示一张，支持左右按钮和底部圆点，不要自动播放'},
+{n:24, zh:'图片灯箱', en:'Lightbox', d:'点击缩略图后，在覆盖层里放大查看图片，背景变暗，关闭后回到原处。', p:'点击作品缩略图打开 Lightbox，显示完整大图，支持关闭和左右切换。'},
+{n:25, zh:'悬停', en:'Hover', d:'鼠标移到元素上、还没点击时的状态。可以变色或上浮；手机触屏没有等价的稳定悬停。', p:'给作品卡片加 Hover，鼠标放上去上移 6 像素、阴影加深，移开恢复。'},
+{n:26, zh:'焦点状态', en:'Focus', d:'表示当前接收键盘输入或操作的元素。按 Tab 切换时，焦点标记应看得见。', p:'给输入框和按钮加清楚的 Focus 样式，按 Tab 切换时用外圈标出当前位置。'},
+{n:27, zh:'按下状态', en:'Active / Pressed', d:'这里指按住按钮的一瞬间，不是导航的当前选中项，也不是持续开启的开关状态。', p:'按钮按下时缩小到 96%，松开恢复，做一个轻微的按压反馈。'},
+{n:28, zh:'禁用状态', en:'Disabled', d:'控件暂时不能操作，外观要能看出区别，并说明为什么不能用。', p:'必填项没填完时禁用提交按钮，下面提示还缺哪些内容。'},
+{n:29, zh:'拖放', en:'Drag and Drop', d:'按住对象，把它拖到别处再松手，常用来排序或上传。', p:'让任务卡片可以拖放排序，拖动时显示落点，松手后保存顺序。'},
+{n:30, zh:'滑动手势', en:'Swipe', d:'手指或指针短距离划过，用方向和距离触发切换；不等于普通页面滚动。', p:'手机端支持左右 Swipe 切换作品，上下仍然正常滚动页面。'},
+{n:31, zh:'滚动', en:'Scroll', d:'移动页面或容器的可见区域。Scroll 本身是浏览行为，不等于某一种动效。', p:'让这个消息列表在容器内纵向滚动，输入框保持在列表下方。'},
+{n:32, zh:'平滑滚动', en:'Smooth Scroll', d:'从当前位置连续移动到目标位置，不是瞬间跳过去。通常用于目录跳转。', p:'点击目录时 Smooth Scroll 到对应章节，并给顶部导航留出偏移量。'},
+{n:33, zh:'横向滚动', en:'Horizontal Scroll', d:'内容向左右展开，用户沿水平方向浏览。要保留明显的下一项线索。', p:'把作品区做成横向滚动卡片，右边露出下一张的一部分，手机可以左右滑动。'},
+{n:34, zh:'滚动吸附', en:'Scroll Snap', d:'滚动结束后自动停在指定的卡片或分屏位置，减少停在两张之间的情况。', p:'给横向卡片区加 Scroll Snap，松手后吸附到最近的一张卡片。'},
+{n:35, zh:'无限滚动', en:'Infinite Scroll', d:'接近列表底部时继续加载下一批内容，不需要每次点下一页。它不是让同一批内容循环播放。', p:'列表快滚到底部时再加载下一批，加载中显示提示，失败时给重试按钮。'},
+{n:36, zh:'回到顶部', en:'Back to Top', d:'滚到一定位置后出现按钮，点击回到页面开头，适合长文或长列表。', p:'往下滚两屏后显示回到顶部按钮，点击平滑返回顶部。'},
+{n:37, zh:'过渡', en:'Transition', d:'让两个状态之间逐渐变化，比如颜色从浅变深，避免一下子跳变。', p:'按钮背景色变化加 200 毫秒 Transition，保持文字位置不动。'},
+{n:38, zh:'缓动', en:'Easing', d:'控制运动的快慢节奏。相同距离和时长，也可以先快后慢，而不是一直匀速。', p:'面板展开用 ease-out 缓动，开始快一点，结束慢一点，总时长 300 毫秒。'},
+{n:39, zh:'弹簧动画', en:'Spring Animation', d:'像弹簧一样接近目标，可能轻微超过再回到位置；回弹程度可以调整。', p:'弹窗出现时加轻微 Spring 回弹，落稳后别继续晃。'},
+{n:40, zh:'淡入淡出', en:'Fade In / Fade Out', d:'通过透明度逐渐出现或消失，位置可以完全不动。', p:'提示文字用 250 毫秒淡入，关闭时淡出，不要同时上下移动。'},
+{n:41, zh:'滑入滑出', en:'Slide In / Slide Out', d:'元素从某个方向移进来或移出去，重点是位置变化。', p:'侧栏从右侧 Slide In，关闭时沿原路滑出，时长 300 毫秒。'},
+{n:42, zh:'缩放', en:'Scale / Zoom', d:'把元素放大或缩小。Scale 常说元素变换，Zoom 也可能指画面或查看倍率。', p:'鼠标悬停时只把卡片里的图片放大到 1.05 倍，卡片外框保持不动。'},
+{n:43, zh:'旋转', en:'Rotate', d:'围绕一个中心转动，可以是小角度，也可以持续整圈旋转。', p:'展开问题时，让右边的加号旋转 45 度，变成关闭的视觉提示。'},
+{n:44, zh:'翻转', en:'Flip', d:'像翻卡片一样，从正面转到背面，通常带有三维透视。', p:'点击名片后做 Flip 翻转，正面放简介，背面放联系方式。'},
+{n:45, zh:'交错入场', en:'Stagger', d:'一组元素按顺序错开一点时间出现，不是所有东西同时动。', p:'这四张卡片做 Stagger 入场，每张比前一张晚 80 毫秒，幅度保持一致。'},
+{n:46, zh:'页面转场', en:'Page Transition', d:'从一个页面切换到另一个页面时的衔接效果，不只是单个按钮的动效。', p:'作品列表进入详情页时加短暂淡入淡出转场，不要让用户多等一段开场动画。'},
+{n:47, zh:'加载指示', en:'Loading Indicator', d:'告诉用户任务仍在进行，比如旋转圆环或跳动圆点；通常不表示准确百分比。', p:'生成过程中显示 Loading 圆环和正在生成，完成后换成结果内容。'},
+{n:48, zh:'骨架屏', en:'Skeleton Screen', d:'数据还没到时，先用与内容结构相近的占位块，提示这里将出现什么。', p:'文章加载时显示标题、封面和三行正文的骨架屏，加载完成后替换成真实内容。'},
+{n:49, zh:'走马灯', en:'Marquee', d:'内容沿一个方向连续流动，常做成无缝循环。这里说的是视觉效果，不建议使用旧的 HTML marquee 标签。', p:'帮我把这些特别鸣谢的头像改成走马灯，匀速向左循环滚动，鼠标放上去暂停。'},
+{n:50, zh:'视差滚动', en:'Parallax', d:'滚动时前景和背景移动速度不同，产生远近层次；不是把整个画面一起平移。', p:'首屏背景比前景文字滚得慢一点，做轻微 Parallax，手机端减弱幅度。'},
+{n:51, zh:'滚动显现', en:'Scroll Reveal', d:'元素滚进可见区域时再出现，常搭配淡入或短距离上移。通常是触发后播放。', p:'每个章节进入视口时淡入并上移 20 像素，只播放一次。'},
+{n:52, zh:'滚动进度', en:'Scroll Progress', d:'把滚动位置映射成进度条或动画进度：滚多少，变化多少，不是触发后自己播完。', p:'文章顶部加阅读进度条，滚到正文末尾时刚好填满。'},
+{n:53, zh:'打字机效果', en:'Typewriter', d:'字符逐个出现，看起来像正在输入，可配一个闪动的光标。', p:'让首屏这句短标题逐字打出来，播完就停，不要反复删除重打。'},
+{n:54, zh:'文字揭示', en:'Text Reveal', d:'文字按字、词或行逐步露出，可以配裁切、上移或透明度变化。', p:'标题按行做 Text Reveal，从下方遮罩里向上露出，保持原来的换行。'},
+{n:55, zh:'乱码解码', en:'Text Scramble', d:'字符先短暂变成随机符号，再逐步变回正确文字，像在解码。', p:'标题出现时做一次 Text Scramble，半秒内还原成完整标题，正文保持静止。'},
+{n:56, zh:'数字递增', en:'Count-up Animation', d:'数字从起点增长到目标值，常用于统计展示；终点必须是真实数据。', p:'统计卡片进入视口后，数字从 0 平滑增加到接口返回的值，播完停止。'},
+{n:57, zh:'三维倾斜', en:'3D Tilt', d:'卡片随指针位置轻微倾斜，形成有透视的浮动感，不需要真的建一个三维模型。', p:'卡片加轻微 3D Tilt，最大倾斜 8 度，鼠标移开后回正。'},
+{n:58, zh:'磁吸效果', en:'Magnetic Effect', d:'指针靠近时，按钮或文字向指针方向轻微偏移，离开后回位。', p:'给主按钮加 Magnetic 效果，靠近时最多跟随 10 像素，别影响点击。'},
+{n:59, zh:'光标跟随', en:'Cursor Follow', d:'一个装饰物或预览图跟着鼠标走，常见的是圆点或浮动图片。', p:'作品列表加光标跟随预览，鼠标经过标题时显示对应图片，离开列表就隐藏。'},
+{n:60, zh:'运动拖尾', en:'Motion Trail', d:'移动对象后面留下逐渐消失的轨迹，可以是圆点、图片或颜色残影。', p:'鼠标移动时留下一小串淡出的圆点拖尾，停止后消失，手机端关闭。'},
+{n:61, zh:'毛玻璃效果', en:'Glassmorphism', d:'半透明面板叠在背景上，透出模糊的底层颜色，配合边缘和层次形成玻璃感。', p:'把这张浮层做成毛玻璃，背景轻微模糊，正文和按钮保持清晰。'},
+{n:62, zh:'渐变', en:'Gradient', d:'颜色在区域内连续过渡，可以是直线、放射或多个色块混合，不一定需要动。', p:'背景用深蓝到青绿的柔和渐变，降低饱和度，保证白字清楚。'},
+{n:63, zh:'颗粒噪点', en:'Grain / Noise', d:'叠加细小随机颗粒，减少过于光滑的感觉。颗粒大小和强度比有没有更重要。', p:'给背景加非常轻的 Grain 颗粒，只影响背景，别让正文发脏。'},
+{n:64, zh:'模糊', en:'Blur', d:'让边缘变软。模糊元素本身和模糊它背后的背景，是两种不同需求。', p:'只模糊弹窗背后的页面，弹窗内容和文字不要一起变糊。'},
+{n:65, zh:'发光', en:'Glow', d:'在边缘或周围加柔和光晕，常用来突出按钮、线条或标题。', p:'给主按钮加一圈很轻的蓝色外发光，别把文字也照糊。'},
+{n:66, zh:'路径裁切', en:'Clip-path', d:'按指定形状裁掉区域外的内容，可做圆形、斜角或不规则窗口，也能用于揭示动画。', p:'封面图先裁成一个小圆，再扩展为完整矩形，做 Clip-path 揭示。'},
+{n:67, zh:'遮罩', en:'Mask', d:'用遮罩决定哪里显示、哪里透明，还能让边缘渐隐；不只是硬边裁切。', p:'给走马灯左右两端加渐变 Mask，让头像自然淡出，不要突然被切断。'},
+{n:68, zh:'扭曲', en:'Distortion', d:'让图形局部拉伸、偏移或起波纹。不同算法外观差别很大，最好附参考。', p:'图片悬停时加轻微水波 Distortion，停止悬停后恢复清晰。'},
+{n:69, zh:'黏液融合', en:'Gooey Effect', d:'几个圆或色块靠近时像液滴一样黏在一起，离开时又拉开。它是效果叫法，不是固定算法。', p:'让这几个圆形标签移动时有轻微 Gooey 融合，文字不要跟着变形。'},
+{n:70, zh:'粒子效果', en:'Particles', d:'用许多小点、线或碎片组成动态画面，可以漂浮、聚散或响应指针。', p:'首屏背景放少量缓慢漂浮的粒子，保持低对比，不要盖住标题。'},
+{n:71, zh:'聚光灯效果', en:'Spotlight', d:'局部区域随指针变亮，像有一束柔光照过去，其余区域维持原来的明暗。', p:'卡片加 Spotlight，鼠标移动时出现柔和光斑，离开后熄灭。'},
+{n:72, zh:'倒影', en:'Reflection', d:'在对象下方或旁边显示镜像，并用透明度或渐隐模拟反射表面。', p:'给产品图下方加一层很淡的倒影，越往下越透明，不要像复制了一张实图。'},
+{n:73, zh:'极简风', en:'Minimalism', d:'减少元素数量，用字号、间距和少量颜色建立重点。极简也需要完整的信息层级。', p:'把首页改成极简风，只保留核心标题、作品和联系入口，用字号和留白区分层级。'},
+{n:74, zh:'粗野主义', en:'Brutalism', d:'网页语境里常指直接、粗粝、刻意不精修的表达；可以暴露结构，但不等于随便做。', p:'作品集尝试 Brutalism，使用大字、直接的链接和明显分区，同时保持易读。'},
+{n:75, zh:'新粗野主义', en:'Neobrutalism', d:'常见特征是粗黑边、实色硬阴影和鲜明色块，比粗野主义更像一套明确的视觉配方。', p:'卡片改成 Neobrutalism：粗黑描边、偏移的实色硬阴影、少量明亮底色。'},
+{n:76, zh:'新拟态', en:'Neumorphism', d:'用接近背景的颜色和一明一暗的软阴影，表现表面凸起或凹陷。按钮边界仍要分得清。', p:'把控制面板做成轻度新拟态，用软阴影表现凸起，选中项要有明确颜色区分。'},
+{n:77, zh:'拟物风', en:'Skeuomorphism', d:'借真实物件的材质和结构帮助理解，比如旋钮、金属刻度、纸张边缘、毛绒玩具、果冻……', p:'音量控制做成拟物旋钮，有刻度和转动反馈，但仍支持键盘调整。'},
+{n:78, zh:'复古风', en:'Retro', d:'借用某个年代的视觉语言。Retro 范围很广，说清年代或媒介比单说复古更有效。', p:'做成九十年代桌面软件风格，用灰色窗口、像素图标和清楚的标题栏。'},
+{n:79, zh:'像素风', en:'Pixel Art', d:'刻意保留方块像素和有限颜色，边缘像低分辨率游戏画面，区别于意外的图片模糊。', p:'首页插画用像素风，边缘保持清楚的方块，不要做平滑插值。'},
+{n:80, zh:'字符画', en:'ASCII Art', d:'用字符的疏密和形状组成图像。常见扩展也会用 ASCII 之外的字符。', p:'把首屏装饰图改成等宽字符画，深底浅字，保留物体轮廓，正文照常显示。'}
+];
+const QUICK = [25,31,49,23,1,61];
+/* ===================== 效果预览定义 ===================== */
+const DEMOS = {};
+const D = (n, o) => DEMOS[n] = o;
+const FAB = '<b class="fab">?</b>';
+
+D(1,{html:`<div class="dw dg3"><i class="bk"></i><i class="bk"></i><i class="bk"></i><i class="bk m"></i><i class="bk m"></i><i class="bk m"></i></div>`,hint:'3 × 2 列，列间对齐'});
+
+D(2,{html:`<div class="dw dfw"><span class="pill">首页</span><span class="pill">作品集</span><span class="pill">关于我</span><span class="pill">笔记</span><span class="pill">联系方式</span><span class="pill">订阅</span><span class="pill">友链</span><span class="pill">RSS</span></div>`,hint:'放不下就换到下一行'});
+
+D(3,{html:`<div class="dw dbe"><i class="bk big"></i><i class="bk m"></i><i class="bk m"></i><i class="bk m"></i><i class="bk m"></i></div>`,hint:'大小格子拼成一组'});
+
+D(4,{html:`<div class="dw dms">
+  <div class="col"><i class="bk" style="flex:3"></i><i class="bk m" style="flex:2"></i><i class="bk" style="flex:3"></i></div>
+  <div class="col"><i class="bk m" style="flex:2"></i><i class="bk" style="flex:4"></i><i class="bk m" style="flex:2"></i></div>
+  <div class="col"><i class="bk" style="flex:4"></i><i class="bk m" style="flex:2"></i><i class="bk" style="flex:2"></i></div>
+</div>`,hint:'按列紧凑，底部不对齐'});
+
+D(5,{html:`<div class="dw dsp">
+  <div class="L"><i class="ln" style="width:88%;height:11px;background:#bccff5"></i><i class="ln" style="width:64%"></i><i class="ln" style="width:50%"></i><button class="mb" style="align-self:flex-start;margin-top:4px">开始使用</button></div>
+  <div class="R"></div>
+</div>`,hint:'左文右图，手机端上下排'});
+
+D(6,{html:`<div class="dw dcd"><div class="cd"><div class="th"></div><i class="ln" style="width:70%"></i><i class="ln" style="width:90%"></i><i class="ln" style="width:44%"></i><button class="mb" style="margin-top:8px;width:100%">访问</button></div></div>`,hint:'图 + 名 + 简介 + 按钮'});
+
+D(7,{html:`<div class="dw dhz"><i class="ln" style="width:66%;height:13px;background:#bccff5"></i><i class="ln" style="width:44%"></i><button class="mb">开始使用</button></div>`,hint:'一句主标题 + 一句说明 + 按钮'});
+
+D(8,{html:`<div class="dw dsb"><div class="L"><i class="on"></i><i></i><i></i><i></i><i></i></div><div class="R"><i class="ln" style="width:56%;height:9px;background:#bccff5"></i><i class="ln" style="width:92%"></i><i class="ln" style="width:80%"></i><i class="ln" style="width:88%"></i><i class="ln" style="width:52%"></i></div></div>`,hint:'左目录 / 右正文'});
+
+D(9,{html:`<div class="dw dsc"><div class="stk">Sticky 标题栏 · 贴住顶部</div><div class="pad"><i class="ln" style="width:92%"></i><i class="ln" style="width:84%"></i><i class="ln" style="width:90%"></i><i class="ln" style="width:76%"></i><i class="ln" style="width:88%"></i><i class="ln" style="width:70%"></i><i class="ln" style="width:86%"></i><i class="ln" style="width:80%"></i></div></div>`,hint:'↕ 在框内滚动看看'});
+
+D(10,{html:`<div class="dw dfix"><div class="dsc" style="border-radius:9px"><div class="ttl">页面内容（可滚动）</div><div class="pad"><i class="ln" style="width:90%"></i><i class="ln" style="width:78%"></i><i class="ln" style="width:86%"></i><i class="ln" style="width:70%"></i><i class="ln" style="width:88%"></i><i class="ln" style="width:76%"></i></div></div>${FAB}</div>`,hint:'滚动时右下角按钮不动'});
+
+D(11,{html:`<div class="dw"><div class="drs"><div class="fr"><i class="bk"></i><i class="bk m"></i><i class="bk a"></i></div></div></div>`,hint:'宽度变化时自动重排',
+  start(st){const c=st.querySelector('.drs');let n=false;c.style.width='100%';setInterval(()=>{n=!n;c.style.width=n?'52%':'100%';},2300);}});
+
+D(12,{html:`<div class="dw dws"><div class="p tight"><span>紧 · 分不清组</span><i class="ln" style="width:90%"></i><i class="ln" style="width:76%"></i><i class="ln" style="width:88%"></i><i class="ln" style="width:70%"></i></div><div class="p loose"><span>松 · 分组清楚</span><i class="ln" style="width:88%"></i><i class="ln" style="width:74%"></i><i class="ln" style="width:90%"></i><i class="ln" style="width:66%"></i></div></div>`,hint:'同一组内容，间距不同'});
+
+D(13,{html:`<div class="dw dnv"><div class="bar"><span class="lg"></span><b>作品</b><b class="on">关于</b><b>联系</b></div></div>`,hint:'当前页面对应入口高亮'});
+
+D(14,{html:`<div class="dw ddd"><div class="w"><button class="mb">头像 ▾</button><div class="mu"><i>个人资料</i><i>账号设置</i><i class="br">退出登录</i></div></div></div>`,hint:'点击展开，点外面收起',
+  init(st){const w=st.querySelector('.ddd');st.querySelector('.mb').onclick=e=>{e.stopPropagation();w.classList.toggle('open');};}});
+
+D(15,{html:`<div class="dw dmg"><div class="w"><button class="mb gh">产品导航 ▾</button><div class="pv"><div><b>按用途</b><i>写作</i><i>绘图</i><i>数据</i></div><div><b>按团队</b><i>设计</i><i>研发</i><i>市场</i></div><div><b>资源</b><i>文档</i><i>模板</i><i>更新日志</i></div></div></div></div>`,hint:'悬停展开整块分组导航'});
+
+D(16,{html:`<div class="dw dtb"><div class="hs"><button class="on">概览</button><button>参数</button><button>评价</button></div><div class="bd">这里是「概览」的内容区。</div></div>`,hint:'点击只切换下方内容',
+  init(st){const bs=[...st.querySelectorAll('.hs button')],bd=st.querySelector('.bd'),tx=['这里是「概览」的内容区。','这里是「参数」的内容区。','这里是「评价」的内容区。'];bs.forEach((b,i)=>b.onclick=()=>{bs.forEach((x,j)=>x.classList.toggle('on',i===j));bd.textContent=tx[i];});}});
+
+D(17,{html:`<div class="dw dac">
+  <div class="it on"><button>运费怎么算？<i>＋</i></button><div class="p"><span>满 99 元包邮，其余按重量计费。</span></div></div>
+  <div class="it"><button>可以退货吗？<i>＋</i></button><div class="p"><span>签收后 7 天内支持无理由退货。</span></div></div>
+  <div class="it"><button>客服时间？<i>＋</i></button><div class="p"><span>工作日 9:00 — 18:00 在线。</span></div></div>
+</div>`,hint:'同一时间只展开一项',
+  init(st){const its=[...st.querySelectorAll('.dac .it')];its.forEach(it=>it.querySelector('button').onclick=()=>{const on=it.classList.contains('on');its.forEach(x=>x.classList.remove('on'));if(!on)it.classList.add('on');});}});
+
+D(18,{html:`<div class="dw dmd"><button class="mb">删除作品</button><div class="ovl"><div class="dlg"><b style="font-size:11.5px;color:#1b1f27">确认删除？</b><div style="font-size:10px;color:#8a93a3;margin:5px 0 10px">删除后无法恢复。</div><div style="display:flex;gap:6px;justify-content:flex-end"><button class="mb gh" data-x>取消</button><button class="mb" data-ok>确认</button></div></div></div></div>`,hint:'打开时背后不可操作',
+  init(st){const w=st.querySelector('.dmd');st.querySelector('.mb').onclick=()=>w.classList.add('open');st.querySelector('.ovl').onclick=e=>{if(!e.target.closest('.dlg')||e.target.hasAttribute('data-x')||e.target.hasAttribute('data-ok'))w.classList.remove('open');};}});
+
+D(19,{html:`<div class="dw drw"><button class="mb">筛选</button><div class="pn"><b style="font-size:11px">筛选</b><span>□ 只看已发布</span><span>□ 只看今年</span><span>□ 只看合集</span><button class="mb" style="margin-top:auto">应用</button></div></div>`,hint:'从右侧滑出',
+  init(st){const w=st.querySelector('.drw');st.querySelector('.mb').onclick=e=>{e.stopPropagation();w.classList.toggle('open');};}});
+
+D(20,{html:`<div class="dw dtt"><div class="w"><button class="q">?</button><div class="bub">满 99 元包邮</div></div></div>`,hint:'悬停或按 Tab 聚焦'});
+
+D(21,{html:`<div class="dw dpp"><div class="w"><button class="mb" data-t>分享</button><div class="pn"><input value="https://xxx.link/p/9f2" readonly><div class="rw"><button class="mb gh" style="flex:1" data-c>复制</button></div></div></div></div>`,hint:'不锁住整个页面',
+  init(st){const w=st.querySelector('.dpp');st.querySelector('[data-t]').onclick=e=>{e.stopPropagation();w.classList.toggle('open');};st.querySelector('[data-c]').onclick=()=>toast('链接已复制');}});
+
+D(22,{html:`<div class="dw dts"><button class="mb">复制链接</button><div class="tst"><i>✓</i>链接已复制</div></div>`,hint:'两秒后自动消失',
+  init(st){const w=st.querySelector('.dts');let t;st.querySelector('.mb').onclick=()=>{w.classList.add('on');clearTimeout(t);t=setTimeout(()=>w.classList.remove('on'),2000);};}});
+
+D(23,{html:`<div class="dw dcr"><div class="vp"><div class="tk"><i style="background:#dbe6fb">案例 A</i><i style="background:#c9d9f8">案例 B</i><i style="background:#b7cdf5">案例 C</i></div></div><div class="rw"><button data-p>‹</button><div class="dt"><i class="on"></i><i></i><i></i></div><button data-n>›</button></div></div>`,hint:'不自动播放',
+  init(st){let i=0;const N=3,tk=st.querySelector('.tk'),dt=[...st.querySelectorAll('.dt i')];const go=k=>{i=(k+N)%N;tk.style.transform='translateX('+(-i*100)+'%)';dt.forEach((d,j)=>d.classList.toggle('on',j===i));};st.querySelector('[data-p]').onclick=()=>go(i-1);st.querySelector('[data-n]').onclick=()=>go(i+1);dt.forEach((d,j)=>d.onclick=()=>go(j));}});
+
+D(24,{html:`<div class="dw dlb"><div class="th" style="background:linear-gradient(135deg,#dbe6fb,#8faeea)"></div><div class="th" style="background:linear-gradient(135deg,#c9d9f8,#6f9ce8)"></div><div class="th" style="background:linear-gradient(135deg,#b7cdf5,#3567d6)"></div><div class="ov"><div class="bg2" style="background:linear-gradient(135deg,#8faeea,#3567d6)"><button data-x>✕</button></div></div></div>`,hint:'点击缩略图放大',
+  init(st){const w=st.querySelector('.dlb');st.querySelectorAll('.th').forEach(t=>t.onclick=()=>w.classList.add('open'));st.querySelector('[data-x]').onclick=()=>w.classList.remove('open');}});
+
+D(25,{html:`<div class="dw dhv"><div class="c"><div style="height:36px;border-radius:7px;background:linear-gradient(135deg,#dbe6fb,#b7cdf5);margin-bottom:8px"></div><i class="ln" style="width:72%"></i><i class="ln" style="width:50%;margin-top:5px"></i></div></div>`,hint:'鼠标放上去、移开试试'});
+
+D(26,{html:`<div class="dw dfc"><input value="输入点什么"><button class="mb">提交</button></div>`,hint:'按 Tab 键切换焦点'});
+
+D(27,{html:`<div class="dw dap"><button>按住我</button></div>`,hint:'按住不放，缩小到 96%'});
+
+D(28,{html:`<div class="dw dds"><input data-i placeholder="必填：作品名称"><button class="mb" data-b disabled>提交</button><div class="rs" data-r>请先填写作品名称</div></div>`,hint:'外观能看出区别 + 说明原因',
+  init(st){const i=st.querySelector('[data-i]'),b=st.querySelector('[data-b]'),r=st.querySelector('[data-r]');i.oninput=()=>{const ok=i.value.trim().length>1;b.disabled=!ok;r.textContent=ok?'':(i.value?'再加几个字':'请先填写作品名称');};}});
+
+D(29,{html:`<div class="dw ddg">
+  <div class="it" draggable="true"><span class="gr">⠿</span>任务一</div>
+  <div class="it" draggable="true"><span class="gr">⠿</span>任务二</div>
+  <div class="it" draggable="true"><span class="gr">⠿</span>任务三</div>
+</div>`,hint:'拖动排序，显示落点',
+  init(st){let cur=null;const wrap=st.querySelector('.ddg');wrap.querySelectorAll('.it').forEach(it=>{
+    it.addEventListener('dragstart',()=>{cur=it;it.classList.add('dragging');});
+    it.addEventListener('dragend',()=>{it.classList.remove('dragging');wrap.querySelectorAll('.it').forEach(x=>x.classList.remove('over'));});
+    it.addEventListener('dragover',e=>{e.preventDefault();if(it!==cur)it.classList.add('over');});
+    it.addEventListener('dragleave',()=>it.classList.remove('over'));
+    it.addEventListener('drop',e=>{e.preventDefault();if(cur&&it!==cur){const all=[...wrap.querySelectorAll('.it')];if(all.indexOf(cur)<all.indexOf(it))it.after(cur);else it.before(cur);}});
+  });}});
+
+D(30,{html:`<div class="dw dsw"><div class="tk"><i style="background:#dbe6fb">作品一</i><i style="background:#c9d9f8">作品二</i><i style="background:#b7cdf5">作品三</i></div><div class="dt"><i class="on"></i><i></i><i></i></div></div>`,hint:'按住左右拖动试试',
+  init(st){const tk=st.querySelector('.tk'),dt=[...st.querySelectorAll('.dt i')];let i=0,x0=null;const N=3,go=k=>{i=(k+N)%N;tk.style.transform='translateX('+(-i*100)+'%)';dt.forEach((d,j)=>d.classList.toggle('on',j===i));};
+    const box=st.querySelector('.dsw');
+    box.addEventListener('pointerdown',e=>{x0=e.clientX;tk.style.transition='none';});
+    box.addEventListener('pointermove',e=>{if(x0===null)return;const d=e.clientX-x0;tk.style.transform='translateX(calc('+(-i*100)+'% + '+d+'px))';});
+    const up=e=>{if(x0===null)return;const d=(e.clientX||x0)-x0;tk.style.transition='';x0=null;if(d<-30)go(i+1);else if(d>30)go(i-1);else go(i);};
+    box.addEventListener('pointerup',up);box.addEventListener('pointerleave',up);}});
+
+D(31,{html:`<div class="dw dsl"><div class="ls">${'<div class="m"><span class="av"></span><span class="bd"><i class="ln" style="width:70%"></i><i class="ln" style="width:44%"></i></span></div>'.repeat(7)}</div><div class="bar"><span>输入消息…</span></div></div>`,hint:'容器内滚动，输入框留在下方'});
+
+D(32,{html:`<div class="dw dss"><div class="cs"><button data-k="0">第一章</button><button data-k="1">第二章</button><button data-k="2">第三章</button></div><div class="vp" data-vp>${[0,1,2].map(i=>'<div class="pg"><b>第'+(i+1)+'章</b><i class="ln" style="width:88%"></i><i class="ln" style="width:72%"></i><i class="ln" style="width:80%"></i><i class="ln" style="width:60%"></i></div>').join('')}</div></div>`,hint:'点击目录，连续移动到目标',
+  init(st){const vp=st.querySelector('[data-vp]');st.querySelectorAll('.cs button').forEach(b=>b.onclick=()=>{const pgs=vp.querySelectorAll('.pg');vp.scrollTo({top:pgs[+b.dataset.k].offsetTop-8,behavior:'smooth'});});}});
+
+D(33,{html:`<div class="dw dhs2"><div class="row">${[1,2,3,4,5,6].map(i=>'<div class="cd"><div class="th"></div><i class="ln" style="width:70%"></i></div>').join('')}</div></div>`,hint:'右边露出下一张的一部分'});
+
+D(34,{html:`<div class="dw dsn"><div class="cd" style="background:#dbe6fb">卡片 1</div><div class="cd" style="background:#c9d9f8">卡片 2</div><div class="cd" style="background:#b7cdf5">卡片 3</div><div class="cd" style="background:#a9c2f0">卡片 4</div></div>`,hint:'松手后吸附到最近一张'});
+
+D(35,{html:`<div class="dw dif" data-ls>${'<div class="it"><span class="av"></span><i class="ln" style="width:64%"></i></div>'.repeat(6)}<div class="st2" data-st>↓ 快滚到底部加载下一批</div></div>`,hint:'接近底部自动加载下一批',
+  init(st){const ls=st.querySelector('[data-ls]'),stt=st.querySelector('[data-st]');let batch=0,busy=false;
+    ls.addEventListener('scroll',()=>{if(busy||batch>=3)return;if(ls.scrollHeight-ls.scrollTop-ls.clientHeight<40){busy=true;stt.textContent='加载中…';
+      setTimeout(()=>{for(let i=0;i<4;i++){const d=document.createElement('div');d.className='it';d.innerHTML='<span class="av"></span><i class="ln" style="width:'+(50+Math.round(Math.random()*35))+'%"></i>';ls.insertBefore(d,stt);}
+      batch++;busy=false;stt.textContent=batch>=3?'没有更多了':'↓ 继续往下滚';},600);}});}});
+
+D(36,{html:`<div class="dw dbt" data-sc>${'<i class="ln" style="width:80%"></i><i class="ln" style="width:66%"></i><i class="ln" style="width:74%"></i>'.repeat(4)}<button class="fab" data-top>↑</button></div>`,hint:'滚两屏后按钮出现',
+  init(st){const s=st.querySelector('[data-sc]');s.addEventListener('scroll',()=>s.classList.toggle('on',s.scrollTop>30));st.querySelector('[data-top]').onclick=()=>s.scrollTo({top:0,behavior:'smooth'});}});
+
+D(37,{html:`<div class="dw dtr"><button>悬停我</button></div>`,hint:'背景色 200ms 渐变，文字不动'});
+
+D(38,{html:`<div class="dw dea"><div class="rw"><span>匀速</span><div class="trk"><i class="bl"></i></div></div><div class="rw"><span>ease-out</span><div class="trk"><i class="bl eo"></i></div></div></div>`,hint:'同距离同时间，节奏不同'});
+
+D(39,{html:`<div class="dw dspg"><div class="pn"></div></div>`,hint:'轻微超过再落稳',
+  init(st){const w=st.querySelector('.dspg');const run=()=>{w.classList.remove('on');setTimeout(()=>w.classList.add('on'),60);};st.addEventListener('click',run);setTimeout(run,300);}});
+
+D(40,{html:`<div class="dw dfd"><div class="tg">提示文字</div><button class="mb gh" data-tg>切换淡入淡出</button></div>`,hint:'只改透明度，位置不动',
+  init(st){const w=st.querySelector('.dfd');st.querySelector('[data-tg]').onclick=()=>w.classList.toggle('off');}});
+
+D(41,{html:`<div class="dw dsd"><div class="tg">侧栏面板</div><button class="mb gh" data-tg>滑入 / 滑出</button></div>`,hint:'重点看位置变化',
+  init(st){const w=st.querySelector('.dsd');st.querySelector('[data-tg]').onclick=()=>w.classList.toggle('off');}});
+
+D(42,{html:`<div class="dw dsc2"><div class="fr"><div class="im"></div></div></div>`,hint:'外框不动，只放大里面的图'});
+
+D(43,{html:`<div class="dw drt"><span class="txt">展开</span><span class="pl">＋</span></div>`,hint:'点击加号，旋转 45 度变叉',
+  init(st){const w=st.querySelector('.drt');st.querySelector('.pl').onclick=()=>{w.classList.toggle('on');st.querySelector('.txt').textContent=w.classList.contains('on')?'收起':'展开';};}});
+
+D(44,{html:`<div class="dw dfl"><div class="c"><div class="fc f1"><b>蜗牛学长</b><span>点击卡片翻面</span></div><div class="fc f2"><b>联系方式</b><span>BorisSuen0424@icloud.com</span></div></div></div>`,hint:'点击翻面，带三维透视',
+  init(st){const w=st.querySelector('.dfl');st.querySelector('.c').onclick=()=>w.classList.toggle('on');}});
+
+D(45,{html:`<div class="dw dsg"><div class="row"><i></i><i></i><i></i><i></i></div><button class="mb gh" style="align-self:center;width:78px" data-r>重播</button></div>`,hint:'每张比前一张晚 80 毫秒',
+  init(st){const w=st.querySelector('.dsg');const run=()=>{w.classList.remove('on');void w.offsetWidth;w.classList.add('on');};st.querySelector('[data-r]').onclick=run;setTimeout(run,400);}});
+
+D(46,{html:`<div class="dw dpt"><div class="pg p1"><b style="font-size:10.5px;color:#3567d6">作品列表</b><i class="ln" style="width:70%"></i><i class="ln" style="width:52%"></i></div><div class="pg p2"><b style="font-size:10.5px;color:#3567d6">作品详情</b><i class="ln" style="width:88%"></i><i class="ln" style="width:64%"></i><i class="ln" style="width:44%"></i></div></div>`,hint:'点击切换两个页面',
+  init(st){const w=st.querySelector('.dpt');st.onclick=()=>w.classList.toggle('on');}});
+
+D(47,{html:`<div class="dw dld"><div class="sp"></div><div class="tx">正在生成…</div><button class="mb gh" data-ok>模拟完成</button></div>`,hint:'圆环不表示准确百分比',
+  init(st){const sp=st.querySelector('.sp'),tx=st.querySelector('.tx');st.querySelector('[data-ok]').onclick=()=>{sp.style.display='none';tx.textContent='✓ 生成完成';tx.style.color='#2f8b52';};}});
+
+D(48,{html:`<div class="dw dsk"><div class="sh big"></div><div class="sh" style="width:70%"></div><div class="sh" style="width:92%"></div><div class="sh" style="width:84%"></div><div class="real"><i class="ln" style="width:60%;height:11px;background:#bccff5"></i><i class="ln" style="width:92%"></i><i class="ln" style="width:84%"></i></div><button class="mb gh" style="align-self:center;width:88px" data-t>加载完成</button></div>`,hint:'结构相同，内容未到',
+  init(st){const w=st.querySelector('.dsk');st.querySelector('[data-t]').onclick=()=>w.classList.toggle('done');}});
+
+D(49,{html:`<div class="dw dmq"><div class="msk"><div class="rl">${'<span class="av"></span>'.repeat(14)}</div></div><div class="msk"><div class="rl" style="animation-direction:reverse">${'<span class="av"></span>'.repeat(14)}</div></div></div>`,hint:'匀速循环，悬停暂停'});
+
+D(50,{html:`<div class="dw dpx2" data-sc><div class="bg" data-bg></div><div class="orb" style="left:16%;top:24%"></div><div class="orb" style="right:14%;top:56%;width:38px;height:38px"></div><div class="content"><b>背景比前景滚得慢</b><i class="ln" style="width:70%;margin:0 auto"></i><i class="ln" style="width:52%;margin:0 auto"></i><i class="ln" style="width:60%;margin:0 auto"></i></div></div>`,hint:'↕ 滚动看层次差异',
+  init(st){const s=st.querySelector('[data-sc]'),bg=st.querySelector('[data-bg]');s.addEventListener('scroll',()=>{bg.style.transform='translateY('+(-s.scrollTop*0.35)+'px)';});}});
+
+D(51,{html:`<div class="dw dsr" data-sc>${[1,2,3,4,5,6].map(i=>'<div class="it">章节 '+i+'</div>').join('')}</div>`,hint:'↕ 滚进可见区才出现',
+  init(st){const s=st.querySelector('[data-sc]');const chk=()=>{s.querySelectorAll('.it').forEach(it=>{if(it.offsetTop-s.scrollTop<95)it.classList.add('in');});};s.addEventListener('scroll',chk);chk();}});
+
+D(52,{html:`<div class="dw dpr"><div class="bar"><i data-bar></i></div><div class="bd" data-sc>${'<i class="ln" style="width:84%"></i><i class="ln" style="width:68%"></i><i class="ln" style="width:78%"></i>'.repeat(4)}</div></div>`,hint:'滚多少，进度条就多长',
+  init(st){const s=st.querySelector('[data-sc]'),b=st.querySelector('[data-bar]');s.addEventListener('scroll',()=>{const m=s.scrollHeight-s.clientHeight;b.style.width=(m>0?s.scrollTop/m*100:0)+'%';});}});
+
+D(53,{html:`<div class="dw dtw"><div class="tx" data-tx></div><button class="mb gh" data-r>重播</button></div>`,hint:'逐字出现，播完就停',
+  init(st){const el=st.querySelector('[data-tx]'),TXT='把想法写成一句能落地的话。';let t=null;
+    const run=()=>{clearInterval(t);el.textContent='';let i=0;t=setInterval(()=>{el.textContent=TXT.slice(0,++i);if(i>=TXT.length)clearInterval(t);},80);};
+    st.querySelector('[data-r]').onclick=run;st._start=run;}});
+
+D(54,{html:`<div class="dw drv"><div class="ln2"><i></i></div><div class="ln2"><i></i></div><div class="ln2"><i></i></div><button class="mb gh" style="align-self:center;width:78px" data-r>重播</button></div>`,hint:'从下方遮罩里向上露出',
+  init(st){const w=st.querySelector('.drv');const run=()=>{w.classList.remove('on');void w.offsetWidth;w.classList.add('on');};st.querySelector('[data-r]').onclick=run;setTimeout(run,400);}});
+
+D(55,{html:`<div class="dw dstx"><div class="tx" data-tx>FRONTEND DICTIONARY</div></div>`,hint:'先乱码，再半秒内还原',
+  init(st){const el=st.querySelector('[data-tx]'),TXT='FRONTEND DICTIONARY',CH='!<>-_\\/[]{}—=+*^?#________';let t=null;
+    const run=()=>{clearInterval(t);let f=0;const total=26;t=setInterval(()=>{f++;const p=Math.floor(f/total*TXT.length);el.textContent=TXT.split('').map((c,i)=>i<p?c:(c===' '?' ':CH[Math.floor(Math.random()*CH.length)])).join('');if(f>total+8){clearInterval(t);el.textContent=TXT;}},26);};
+    st._start=run;st.addEventListener('click',run);}});
+
+D(56,{html:`<div class="dw dcu"><div class="it"><b data-v="128">0</b><span>词条</span></div><div class="it"><b data-v="7">0</b><span>大类</span></div><div class="it"><b data-v="80">0</b><span>预览</span></div></div>`,hint:'进入视口后从 0 增长',
+  init(st){const run=()=>{st.querySelectorAll('[data-v]').forEach(el=>{const to=+el.dataset.v;let s=null;const step=ts=>{if(!s)s=ts;const p=Math.min((ts-s)/700,1);el.textContent=Math.round(to*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(step);};requestAnimationFrame(step);});};st._start=run;}});
+
+D(57,{html:`<div class="dw dtl"><div class="c" data-c>3D Tilt</div></div>`,hint:'指针移动，最大倾斜 8 度',
+  init(st){const c=st.querySelector('[data-c]');st.addEventListener('pointermove',e=>{const r=st.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform='rotateY('+(x*16)+'deg) rotateX('+(-y*16)+'deg)';});st.addEventListener('pointerleave',()=>c.style.transform='');}});
+
+D(58,{html:`<div class="dw dmg2"><button data-b>主按钮</button></div>`,hint:'靠近时最多跟随 10 像素',
+  init(st){const b=st.querySelector('[data-b]');st.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;let dx=e.clientX-cx,dy=e.clientY-cy;const d=Math.hypot(dx,dy);if(d<90){const k=1-d/90;b.style.transform='translate('+(dx*0.18*k).toFixed(1)+'px,'+(dy*0.18*k).toFixed(1)+'px)';}else b.style.transform='';});st.addEventListener('pointerleave',()=>b.style.transform='');}});
+
+D(59,{html:`<div class="dw dcf"><div class="dot"></div><div class="rw"><span>作品一</span><span>2026</span></div><div class="rw"><span>作品二</span><span>2025</span></div><div class="rw"><span>作品三</span><span>2025</span></div></div>`,hint:'鼠标经过时出现跟随预览',
+  init(st){const dot=st.querySelector('.dot'),rows=[...st.querySelectorAll('.rw')];const colors=['linear-gradient(135deg,#bccff5,#8faeea)','linear-gradient(135deg,#a9c2f0,#6f9ce8)','linear-gradient(135deg,#c8b6f0,#8faeea)'];
+    st.addEventListener('pointermove',e=>{const r=st.getBoundingClientRect();dot.style.left=(e.clientX-r.left)+'px';dot.style.top=(e.clientY-r.top)+'px';});
+    st.addEventListener('pointerenter',()=>st.classList.add('on'));
+    st.addEventListener('pointerleave',()=>st.classList.remove('on'));
+    rows.forEach((row,i)=>row.addEventListener('pointerenter',()=>dot.style.background=colors[i]));}});
+
+D(60,{html:`<div class="dw dtr2"><span>移动鼠标看拖尾</span></div>`,hint:'轨迹逐渐消失',
+  init(st){let last=0;st.addEventListener('pointermove',e=>{const n=performance.now();if(n-last<42)return;last=n;const r=st.getBoundingClientRect();const d=document.createElement('b');d.className='pt';d.style.left=(e.clientX-r.left)+'px';d.style.top=(e.clientY-r.top)+'px';st.appendChild(d);setTimeout(()=>d.remove(),660);});}});
+
+D(61,{html:`<div class="dw dgl"><span class="bl" style="width:90px;height:90px;left:8%;top:-18%"></span><span class="bl" style="width:60px;height:60px;right:14%;bottom:-12%"></span><div class="bd"><div class="gp"><b>毛玻璃浮层</b><span>背景模糊，正文保持清晰</span></div></div></div>`,hint:'半透明面板透出底层颜色'});
+
+D(62,{html:`<div class="dw dgr"><div class="big"></div><div class="row"><div class="sw"></div><div class="sw"></div><div class="sw"></div></div></div>`,hint:'直线 / 放射 / 多色混合'});
+
+D(63,{html:`<div class="dw dgn" style="height:100%"><div class="half a">无颗粒</div><div class="half b">加颗粒</div></div>`,hint:'颗粒只影响背景，正文别发脏'});
+
+D(64,{html:`<div class="dw dbl"><div class="bgc"><i class="ln" style="width:88%"></i><i class="ln" style="width:74%"></i><i class="ln" style="width:92%"></i><i class="ln" style="width:66%"></i><i class="ln" style="width:80%"></i></div><div class="bd"><div class="dlg">弹窗内容和文字<br>不要一起变糊</div></div></div>`,hint:'只模糊背后的页面'});
+
+D(65,{html:`<div class="dw dgw"><button>外发光按钮</button></div>`,hint:'柔和光晕，别照糊文字'});
+
+D(66,{html:`<div class="dw dcp"><div class="sp" data-s></div></div>`,hint:'点击切换裁切形状',
+  init(st){const s=st.querySelector('[data-s]');let i=0;st.onclick=()=>{i=(i+1)%3;s.className='sp'+(i===1?' s1':i===2?' s2':'');};}});
+
+D(67,{html:`<div class="dw dmsk"><div class="lb">硬切边</div><div class="msk hard"><div class="rl">${'<span class="av"></span>'.repeat(12)}</div></div><div class="lb">渐变遮罩</div><div class="msk soft"><div class="rl">${'<span class="av"></span>'.repeat(12)}</div></div></div>`,hint:'边缘渐隐，不是硬边切断'});
+
+D(68,{html:`<div class="dw ddi"><div class="im"></div></div>`,hint:'悬停看近似水波扭曲'});
+
+D(69,{html:`<div class="dw dgy"><svg width="0" height="0" style="position:absolute"><filter id="gooFx"><feGaussianBlur in="SourceGraphic" stdDeviation="5" result="b"/><feColorMatrix in="b" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -9"/></filter></svg><div class="goo"><span class="bl"></span><span class="bl"></span></div></div>`,hint:'靠近时像液滴黏在一起'});
+
+D(70,{html:`<div class="dw dpc"><div class="tx">首屏标题</div></div>`,hint:'低对比漂浮，不盖住标题',
+  init(st){const box=st.querySelector('.dpc');for(let i=0;i<16;i++){const d=document.createElement('b');d.className='p';const s=(3+Math.random()*5).toFixed(1);d.style.cssText='width:'+s+'px;height:'+s+'px;left:'+(Math.random()*96)+'%;top:'+(Math.random()*88)+'%;animation-duration:'+(5+Math.random()*5).toFixed(1)+'s;animation-delay:-'+(Math.random()*6).toFixed(1)+'s';box.appendChild(d);}}});
+
+D(71,{html:`<div class="dw dsl2" data-s><b>把指针移到卡片上</b></div>`,hint:'局部随指针变亮',
+  init(st){st.addEventListener('pointermove',e=>{const r=st.getBoundingClientRect();st.style.setProperty('--x',(e.clientX-r.left)+'px');st.style.setProperty('--y',(e.clientY-r.top)+'px');});st.addEventListener('pointerenter',()=>st.classList.add('on'));st.addEventListener('pointerleave',()=>st.classList.remove('on'));}});
+
+D(72,{html:`<div class="dw drf"><div class="ob"></div><div class="mir"></div></div>`,hint:'越往下越透明，不像复制实图'});
+
+D(73,{html:`<div class="dw dmn"><span>02 / WORKS</span><b>少即是多</b><div class="rv"></div><span>字号 · 间距 · 留白</span></div>`,hint:'元素少，但层级要完整'});
+
+D(74,{html:`<div class="dw dbr" style="padding:0"><div style="border:2px solid #111;padding:12px;width:100%;height:100%"><b>直接说重点</b><u>去看作品 →</u><hr><span>NO.FRILLS — 2026</span></div></div>`,hint:'粗粝、暴露结构，但仍要易读'});
+
+D(75,{html:`<div class="dw dnb"><div class="c"><b>新粗野主义</b><span>粗黑描边 + 实色硬阴影</span></div></div>`,hint:'悬停时阴影收进去'});
+
+D(76,{html:`<div class="dw dnm"><div class="k" data-k>凸起</div><div class="k" data-k>凹陷</div></div>`,hint:'点击切换凸起 / 凹陷',
+  init(st){st.querySelectorAll('[data-k]').forEach(k=>k.onclick=()=>k.classList.toggle('on'));}});
+
+D(77,{html:`<div class="dw dsk2"><div class="knob" data-k><i></i></div></div>`,hint:'点击转动，有刻度反馈',
+  init(st){const k=st.querySelector('[data-k]');let a=0;k.onclick=()=>{a+=40;k.style.transform='rotate('+a+'deg)';};}});
+
+D(78,{html:`<div class="dw drt2"><div class="win"><div class="tb"><span>Program Manager</span><em>✕</em></div><div class="ct"><span class="ic"></span><span class="bt">确定</span></div></div></div>`,hint:'灰色窗口 + 像素图标 + 标题栏'});
+
+D(79,{html:`<div class="dw"><div class="dpx" data-p></div></div>`,hint:'边缘保留清楚方块，不做插值',
+  init(st){const art=['.....X...','..X..X.X.','..XXXXXX.','.XXXXXXXX','XXXXXXXX.','.XXXXXX..','..XXXX...','...XX....','...X.....'];const g=st.querySelector('[data-p]');g.innerHTML=art.map((row)=>row.split('').map((c)=>'<i class="'+(c==='X'?'on':'')+'"></i>').join('')).join('');}});
+
+D(80,{html:`<div class="dw das"><pre>   /\\_/\\
+  ( o.o )   &lt; HELLO
+   &gt; ^ &lt;
+  /  |  \\
+ /   |   \\
+______|______</pre></div>`,hint:'深底浅字，保留物体轮廓'});
+
+/* ===================== 渲染与交互 ===================== */
+const pad2 = n => (n < 10 ? '0' : '') + n;
+const $ = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => [].slice.call((r || document).querySelectorAll(s));
+
+/* ---------- 全局 toast ---------- */
+let toastTimer;
+function toast(msg){
+  const t = $('#gtoast');
+  $('#gtoastTx').textContent = msg;
+  t.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('on'), 1800);
+}
+
+/* ---------- 复制 ---------- */
+function copyText(txt, cb){
+  const done = () => cb && cb();
+  if (navigator.clipboard && window.isSecureContext !== false) {
+    navigator.clipboard.writeText(txt).then(done, () => fallback());
+  } else fallback();
+  function fallback(){
+    const ta = document.createElement('textarea');
+    ta.value = txt; ta.style.cssText = 'position:fixed;left:-9999px;top:0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch(e){}
+    ta.remove(); done();
+  }
+}
+
+/* ===================== 原文配图（取自原文章） ===================== */
+const ORIG = {1:['assets/e01.jpg'],2:['assets/e02.png'],3:['assets/e03.jpg'],4:['assets/e04.png'],5:['assets/e05.jpg','assets/e05b.jpg'],6:['assets/e06.jpg'],7:['assets/e07.jpg'],8:['assets/e08.png'],9:['assets/e09.gif'],10:['assets/e10.gif'],11:['assets/e11.gif'],12:['assets/e12.jpg'],13:['assets/e13.jpg'],14:['assets/e14.jpg'],15:['assets/e15.jpg'],16:['assets/e16.png'],17:['assets/e17.png'],18:['assets/e18.gif'],19:['assets/e19.jpg'],20:['assets/e20.png'],21:['assets/e21.gif'],22:['assets/e22.gif'],23:['assets/e23.gif'],24:['assets/e24.gif'],25:['assets/e25.gif'],26:['assets/e26.gif'],27:['assets/e27.gif'],28:['assets/e28.png'],29:['assets/e29.gif'],30:['assets/e30.jpg'],31:['assets/e31.gif'],32:['assets/e32.gif'],33:['assets/e33.gif'],34:['assets/e34.gif'],35:['assets/e35.gif'],36:['assets/e36.png'],37:['assets/e37.gif'],38:['assets/e38.gif'],39:['assets/e39.png'],40:['assets/e40.gif'],41:['assets/e41.gif'],42:['assets/e42.gif'],43:['assets/e43.gif'],44:['assets/e44.gif'],45:['assets/e45.gif'],46:['assets/e46.gif'],47:['assets/e47.jpg'],48:['assets/e48.gif'],49:['assets/e49.gif'],50:['assets/e50.gif'],51:['assets/e51.gif'],52:['assets/e52.jpg'],53:['assets/e53.gif'],54:['assets/e54.gif'],55:['assets/e55.gif'],56:['assets/e56.gif'],57:['assets/e57.gif'],58:['assets/e58.gif'],59:['assets/e59.png'],60:['assets/e60.gif'],61:['assets/e61.jpg'],62:['assets/e62.png'],63:['assets/e63.jpg'],64:['assets/e64.png'],65:['assets/e65.jpg'],66:['assets/e66.gif'],67:['assets/e67.gif'],68:['assets/e68.gif'],69:['assets/e69.gif'],70:['assets/e70.jpg'],71:['assets/e71.gif'],72:['assets/e72.png'],73:['assets/e73.png'],74:['assets/e74.png'],75:['assets/e75.jpg'],76:['assets/e76.jpg'],77:['assets/e77.jpg'],78:['assets/e78.jpg'],79:['assets/e79.jpg'],80:['assets/e80.jpg']};
+
+/* ---------- 渲染词条卡片 ---------- */
+function cardHTML(t){
+  const dm = DEMOS[t.n] || {};
+  const key = (t.n + ' ' + t.zh + ' ' + t.en + ' ' + t.d + ' ' + t.p).toLowerCase();
+  const imgs = (ORIG[t.n] || []).map(u =>
+    '<img loading="lazy" decoding="async" src="' + u + '" data-full="' + u + '" alt="原文配图：' + t.zh + '">').join('');
+  const fig = imgs
+    ? '<figure class="orig' + ((ORIG[t.n] || []).length > 1 ? ' multi' : '') + '" data-lb title="点击查看原图">' + imgs + '<figcaption>原文配图 · 点击放大</figcaption></figure>'
+    : '';
+  return '<article class="card" id="kp-' + t.n + '" data-n="' + t.n + '" data-search="' + key.replace(/"/g, '') + '">'
+    + '<div class="chd"><span class="no">' + pad2(t.n) + '</span><span class="zh">' + t.zh + '</span><span class="en">' + t.en + '</span></div>'
+    + '<div class="st' + (dm.tall ? ' tall' : '') + '" data-st="' + t.n + '"></div>'
+    + '<p class="cdsc">' + t.d + '</p>'
+    + '<div class="cprompt"><span class="lbl">PROMPT 示例</span><button class="cpy" data-cpy="' + t.n + '">复制</button><p>' + t.p + '</p></div>'
+    + fig
+    + '</article>';
+}
+
+/* ---------- 渲染分类区块 ---------- */
+let secHTML = '';
+CATS.forEach(c => {
+  const items = TERMS.filter(t => t.n >= c.from && t.n <= c.to);
+  secHTML += '<section class="sec" id="' + c.id + '">'
+    + '<div class="sec-head"><div class="rn">' + c.rm + '</div><div><h2>' + c.name + '</h2><p>' + c.desc + '</p></div></div>'
+    + '<div class="cards">' + items.map(cardHTML).join('') + '</div></section>';
+});
+$('#sections').innerHTML = secHTML;
+
+/* ---------- 侧栏 / 快捷入口 / 速查表 ---------- */
+$('#nav').innerHTML = CATS.map(c =>
+  '<a href="#' + c.id + '" data-c="' + c.id + '"><span class="rm">' + c.rm + '</span><span>' + c.name + '</span><span class="ct">' + (c.to - c.from + 1) + '</span></a>'
+).join('');
+
+$('#quick').innerHTML = QUICK.map(n => {
+  const t = TERMS[n - 1];
+  return '<button data-go="' + n + '">' + t.zh + '</button>';
+}).join('');
+
+$('#jump').innerHTML = QUICK.map(n => {
+  const t = TERMS[n - 1];
+  return '<button data-go="' + n + '">' + t.zh + '<b>' + pad2(n) + '</b></button>';
+}).join('');
+
+$('#indexChips').innerHTML = TERMS.map(t =>
+  '<button data-go="' + t.n + '"><em>' + pad2(t.n) + '</em>' + t.zh + '</button>'
+).join('');
+
+/* ---------- 挂载 80 个效果预览 ---------- */
+$$('.st').forEach(st => {
+  const n = +st.dataset.st, dm = DEMOS[n] || {};
+  st.innerHTML = (dm.html || '') + (dm.hint ? '<span class="hint">' + dm.hint + '</span>' : '');
+  if (dm.init) { try { dm.init(st); } catch (e) { console.warn('demo ' + n, e); } }
+});
+
+/* 进入视口时才播放 */
+const io = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if (!e.isIntersecting) return;
+    const st = e.target;
+    st.classList.add('live');
+    const n = +st.dataset.st, dm = DEMOS[n] || {};
+    if (dm.start) { try { dm.start(st); } catch(err){} }
+    if (st._start) { try { st._start(); } catch(err){} }
+    io.unobserve(st);
+  });
+}, {rootMargin: '120px 0px'});
+$$('.st').forEach(st => io.observe(st));
+
+/* 卡片入场 */
+const io2 = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io2.unobserve(e.target); } });
+}, {rootMargin: '0px 0px -8% 0px'});
+$$('.card').forEach(c => io2.observe(c));
+setTimeout(() => $$('.card').forEach(c => c.classList.add('in')), 1200);
+
+/* ---------- 复制 prompt ---------- */
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-cpy]');
+  if (!b) return;
+  const t = TERMS[+b.dataset.cpy - 1];
+  copyText(t.p, () => {
+    b.textContent = '已复制'; b.classList.add('done');
+    setTimeout(() => { b.textContent = '复制'; b.classList.remove('done'); }, 1400);
+    toast('prompt 已复制，粘到对话框就能用');
+  });
+});
+
+/* ---------- 原文配图灯箱 ---------- */
+const lbx = $('#lbx'), lbxImg = $('#lbxImg');
+document.addEventListener('click', e => {
+  const fig = e.target.closest('[data-lb]');
+  if (fig) {
+    const img = fig.querySelector('img');
+    lbxImg.src = img ? (img.dataset.full || img.src) : '';
+    lbx.classList.add('on');
+    document.body.style.overflow = 'hidden';
+    return;
+  }
+  if (e.target.closest('#lbx')) {
+    lbx.classList.remove('on');
+    lbxImg.src = '';
+    document.body.style.overflow = '';
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && lbx.classList.contains('on')) {
+    lbx.classList.remove('on'); lbxImg.src = '';
+    document.body.style.overflow = '';
+  }
+});
+
+/* ---------- 跳转到指定词条 ---------- */
+function goTo(n){
+  const el = $('#kp-' + n);
+  if (!el) return;
+  el.classList.remove('hide');
+  el.scrollIntoView({behavior: 'smooth', block: 'center'});
+  el.classList.add('flash');
+  setTimeout(() => el.classList.remove('flash'), 1600);
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-go]');
+  if (b) goTo(+b.dataset.go);
+});
+
+/* ---------- 搜索 ---------- */
+const q = $('#q'), wrap = $('#searchWrap');
+q.addEventListener('input', () => {
+  const kw = q.value.trim().toLowerCase();
+  wrap.classList.toggle('has', !!kw);
+  let hit = 0;
+  $$('.card').forEach(c => {
+    const ok = !kw || c.dataset.search.indexOf(kw) > -1;
+    c.classList.toggle('hide', !ok);
+    if (ok) hit++;
+  });
+  $$('.sec').forEach(s => {
+    const any = $$('.card:not(.hide)', s).length > 0;
+    s.style.display = any ? '' : 'none';
+  });
+  $('#empty').classList.toggle('on', hit === 0);
+  $('#meta').innerHTML = kw ? '找到 <b>' + hit + '</b> 条' : '共 <b>80</b> 条';
+});
+$('#clr').onclick = () => { q.value = ''; q.dispatchEvent(new Event('input')); q.focus(); };
+
+/* ---------- 阅读进度 / 回到顶部 / 目录高亮 ---------- */
+const prog = $('#progress'), topBtn = $('#totop');
+let ticking = false;
+function onScroll(){
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  prog.style.width = (h > 0 ? window.scrollY / h * 100 : 0) + '%';
+  topBtn.classList.toggle('on', window.scrollY > window.innerHeight * 1.2);
+  ticking = false;
+}
+window.addEventListener('scroll', () => {
+  if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
+}, {passive: true});
+onScroll();
+topBtn.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
+
+const io3 = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if (!e.isIntersecting) return;
+    const id = e.target.id;
+    $$('#nav a').forEach(a => a.classList.toggle('on', a.dataset.c === id));
+  });
+}, {rootMargin: '-76px 0px -68% 0px'});
+$$('.sec').forEach(s => io3.observe(s));
+
+/* ---------- 收起浮层（捕获阶段，不受 stopPropagation 影响） ---------- */
+document.addEventListener('click', e => {
+  $$('.ddd.open,.dpp.open').forEach(el => { if (!el.contains(e.target)) el.classList.remove('open'); });
+}, true);
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') $$('.ddd.open,.dpp.open').forEach(el => el.classList.remove('open'));
+});
+
+/* ---------- 搜索快捷键 ---------- */
+document.addEventListener('keydown', e => {
+  if (e.key === '/' && document.activeElement !== q) { e.preventDefault(); q.focus(); }
+});
+</script>
+</body>
+</html>
