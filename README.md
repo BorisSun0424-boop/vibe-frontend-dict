@@ -43,7 +43,3 @@ vibe-frontend-dict/
 python3 -m http.server 8000
 # 然后访问 http://localhost:8000
 ```
-
-## 内容来源
-
-内容整理自微信公众号文章《给 Vibe Coding 小白的前端效果词典》（作者：埃弗里特鱼）。本仓库为原文内容的网页化重建，其中全部可交互效果预览为网页版额外添加。
